@@ -25,6 +25,32 @@ export class UserService {
     }
 
     /**
+     * 존재 확인
+     */
+    async checkValid(
+        userID: string, //
+    ): Promise<UserEntity> {
+        const check = await this.userRepository.getOneByID(userID);
+        if (!check) {
+            throw new ConflictException(MESSAGES.USER_UNVALID);
+        }
+        return check;
+    }
+
+    /**
+     * 존재 확인
+     */
+    async checkValidByEmail(
+        email: string, //
+    ): Promise<UserEntity> {
+        const check = await this.userRepository.getOneByEmail(email);
+        if (!check) {
+            throw new ConflictException(MESSAGES.USER_UNVALID);
+        }
+        return check;
+    }
+
+    /**
      * email, nickname 중복 확인
      */
     async checkOverlap(dto: {
