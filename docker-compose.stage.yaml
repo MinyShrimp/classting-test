@@ -6,9 +6,10 @@ services:
         platform: linux/x86_64
         image: mysql:5.7
         container_name: classting-db
-        env_file: .env
+        env_file: .env.stage
         volumes:
             - ./db/conf.d:/etc/mysql/conf.d
+            - ./db/init:/docker-entrypoint-initdb.d
         ports:
             - 3306:3306
         restart: always
@@ -22,26 +23,11 @@ services:
 
         container_name: classting-backend
 
-        # Container Port 연결
-        #   - host:container
         ports:
-            - 3001:3001
+            - 80:3001
 
         # 환경 변수 설정
-        env_file: .env
-
-        volumes:
-            - ./src:/app/src
-            - ./dist:/app/dist
-            - ./test:/app/test
-            - ./key:/app/key
-
-            - ./package.json:/app/package.json
-            - ./yarn.lock:/app/yarn.lock
-            - ./tsconfig.build.json:/app/tsconfig.build.json
-            - ./tsconfig.json:/app/tsconfig.json
-
-            - ./.env.dev:/app/.env
+        env_file: .env.stage
 
         # 재시작 설정
         restart: always
