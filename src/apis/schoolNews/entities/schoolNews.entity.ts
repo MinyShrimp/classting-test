@@ -37,9 +37,15 @@ export class SchoolNewsEntity {
     )
     school: SchoolEntity;
 
+    @Column({ name: 'schoolId', nullable: true })
+    schoolID: string;
+
     @ManyToOne(
         () => UserEntity,
         { cascade: true, onDelete: 'SET NULL' }, //
     )
     user: UserEntity;
+
+    @Column({ name: 'userId', nullable: true })
+    userID: string;
 }

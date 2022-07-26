@@ -68,7 +68,7 @@ export class SchoolNewsService {
         const school = await this.schoolService.checkValid(schoolID);
 
         // 신청한 유저와 학교 관리자가 같은지 확인
-        if (user.id !== school.user.id) {
+        if (user.id !== school.userID) {
             throw new UnauthorizedException();
         }
 
@@ -96,7 +96,7 @@ export class SchoolNewsService {
         const news = await this.checkValid(schoolNewsID);
 
         // 신청한 유저와 학교 관리자가 같은지 확인
-        if (user.id !== news.user.id) {
+        if (user.id !== news.userID) {
             throw new UnauthorizedException();
         }
 
@@ -118,7 +118,7 @@ export class SchoolNewsService {
         const news = await this.checkValidWithDeleted(dto.schoolNewsID);
 
         // 신청한 유저와 학교 관리자가 같은지 확인
-        if (user.id !== news.user.id) {
+        if (user.id !== news.userID) {
             throw new UnauthorizedException();
         }
 
@@ -140,7 +140,7 @@ export class SchoolNewsService {
         const news = await this.checkValid(dto.schoolNewsID);
 
         // 신청한 유저와 학교 관리자가 같은지 확인
-        if (user.id !== news.user.id) {
+        if (user.id !== news.userID) {
             throw new UnauthorizedException();
         }
 

@@ -87,7 +87,7 @@ export class SchoolService {
         const user = await this.userSerivce.checkValid(payload.id);
 
         // 학교 페이지를 등록한 사람과 같은 사람인지 검사
-        if (school.user.id !== user.id) {
+        if (school.userID !== user.id) {
             throw new UnauthorizedException();
         }
 
@@ -110,7 +110,7 @@ export class SchoolService {
         const user = await this.userSerivce.checkValid(payload.id);
 
         // 학교 페이지를 등록한 사람과 같은 사람인지 검사
-        if (school.user.id !== user.id) {
+        if (school.userID !== user.id) {
             throw new UnauthorizedException();
         }
 
