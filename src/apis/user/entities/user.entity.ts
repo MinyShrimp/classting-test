@@ -7,6 +7,7 @@ import {
     DeleteDateColumn,
     PrimaryGeneratedColumn,
 } from 'typeorm';
+import { IsEmail, Length } from 'class-validator';
 
 import { UserClassEntity } from 'src/apis/userClass/entities/userClass.entity';
 
@@ -15,13 +16,16 @@ export class UserEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
+    @Length(2, 10)
     @Column()
     name: string;
 
-    @Column()
+    @Length(2, 8)
+    @Column({ unique: true })
     nickName: string;
 
-    @Column()
+    @IsEmail()
+    @Column({ unique: true })
     email: string;
 
     @Column()
