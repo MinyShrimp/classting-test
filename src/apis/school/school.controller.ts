@@ -83,7 +83,7 @@ export class SchoolController {
         const result = await this.schoolService.update(payload, dto);
         return result
             ? MESSAGES.SCHOOL_UPDATE_SUCCESS
-            : MESSAGES.SCHOOL_UPDATE_FAILED;
+            : MESSAGES.UNKNOWN_FAILED;
     }
 
     @Delete('/')
@@ -100,6 +100,6 @@ export class SchoolController {
         const result = await this.schoolService.delete(payload, dto);
         return result
             ? MESSAGES.SCHOOL_DELETE_SUCCESS
-            : MESSAGES.SCHOOL_DELETE_FAILED;
+            : MESSAGES.UNKNOWN_FAILED;
     }
 }

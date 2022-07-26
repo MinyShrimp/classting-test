@@ -41,13 +41,13 @@ export class SchoolNewsController {
         summary: '학교 뉴스 생성 API',
         description: '학교 뉴스 생성',
     })
-    @ApiOkResponse({ description: '생성되었습니다.' })
+    @ApiOkResponse({ description: MESSAGES.NEWS_CREATE_SUCCESS })
     async create(
         @Payload() payload: IPayload,
         @Body() dto: CreateSchoolNewsDto, //
     ): Promise<string> {
         await this.schoolNewsService.create(payload, dto);
-        return '생성되었습니다.';
+        return MESSAGES.NEWS_CREATE_SUCCESS;
     }
 
     @Put('/')
@@ -55,13 +55,13 @@ export class SchoolNewsController {
         summary: '학교 뉴스 수정 API',
         description: '학교 뉴스 수정',
     })
-    @ApiOkResponse({ description: '수정되었습니다.' })
+    @ApiOkResponse({ description: MESSAGES.NEWS_UPDATE_SUCCESS })
     async update(
         @Payload() payload: IPayload,
         @Body() dto: UpdateSchoolNewsDto, //
     ): Promise<string> {
         const result = await this.schoolNewsService.update(payload, dto);
-        return result ? '수정되었습니다.' : '수정을 실패했습니다.';
+        return result ? MESSAGES.NEWS_UPDATE_SUCCESS : MESSAGES.UNKNOWN_FAILED;
     }
 
     @Patch('/')
@@ -69,13 +69,13 @@ export class SchoolNewsController {
         summary: '학교 뉴스 삭제 취소 API',
         description: '학교 뉴스 삭제 취소',
     })
-    @ApiOkResponse({ description: '삭제 취소되었습니다.' })
+    @ApiOkResponse({ description: MESSAGES.NEWS_RESTORE_SUCCESS })
     async restore(
         @Payload() payload: IPayload,
         @Body() dto: DeleteSchoolNewsDto, //
     ): Promise<string> {
         const result = await this.schoolNewsService.restore(payload, dto);
-        return result ? '삭제 취소되었습니다.' : '삭제 취소를 실패했습니다.';
+        return result ? MESSAGES.NEWS_RESTORE_SUCCESS : MESSAGES.UNKNOWN_FAILED;
     }
 
     @Delete('/')
@@ -83,12 +83,12 @@ export class SchoolNewsController {
         summary: '학교 뉴스 삭제 API',
         description: '학교 뉴스 삭제',
     })
-    @ApiOkResponse({ description: '삭제되었습니다.' })
+    @ApiOkResponse({ description: MESSAGES.NEWS_DELETE_SUCCESS })
     async elete(
         @Payload() payload: IPayload,
         @Body() dto: DeleteSchoolNewsDto, //
     ): Promise<string> {
         const result = await this.schoolNewsService.delete(payload, dto);
-        return result ? '삭제되었습니다.' : '삭제를 실패했습니다.';
+        return result ? MESSAGES.NEWS_DELETE_SUCCESS : MESSAGES.UNKNOWN_FAILED;
     }
 }

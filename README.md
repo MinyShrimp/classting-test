@@ -1,5 +1,7 @@
 # 클러스팅 사전 테스트
 
+![swagger](https://user-images.githubusercontent.com/41733172/181095949-c7fac147-61f0-4c6a-aec9-9611d6170b5d.png)
+
 ## 기간
 
 2022-07-26(화) ~ 2022-08-02(화)
@@ -38,9 +40,10 @@
 
 ### 문서화
 
--   [ ] 구현에 맞는 API 명세를 문서화해주세요.
+-   [x] 구현에 맞는 API 명세를 문서화해주세요.
 
-    -   [ ] Swagger
+    -   [x] Swagger
+    -   [x] README
 
 ## 스택
 
@@ -97,7 +100,7 @@ NestJS, Docker, TypeORM, MySQL
 
 ### 2022-07-27
 
-#### 구독 CRUD API 구현
+#### 구독 CRD API 구현
 
 |        |                             |                          |
 | ------ | --------------------------- | ------------------------ |
@@ -105,3 +108,9 @@ NestJS, Docker, TypeORM, MySQL
 | GET    | /api/subscribe/news/:school | 학교별 소식 조회         |
 | POST   | /api/subscribe              | 구독                     |
 | DELETE | /api/subscribe              | 구독 취소                |
+
+#### 뉴스피드 API 구현
+
+|     |               |                   |
+| --- | ------------- | ----------------- |
+| GET | /api/newsfeed | 뉴스피드 조회 API |

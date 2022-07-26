@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 
 import { IPayload } from 'src/commons/auth/payload.interface';
+import { MESSAGES } from 'src/commons/message/message.enum';
 
 import { UserService } from '../user/user.service';
 import { SchoolService } from '../school/school.service';
@@ -36,7 +37,7 @@ export class SchoolNewsService {
     ): Promise<SchoolNewsEntity> {
         const news = await this.schoolNewsRepository.getOneByID(schoolNewsID);
         if (!news) {
-            throw new ConflictException('학교 소식 정보가 없습니다.');
+            throw new ConflictException(MESSAGES.NEWS_UNVALID);
         }
         return news;
     }
@@ -51,7 +52,7 @@ export class SchoolNewsService {
             schoolNewsID,
         );
         if (!news) {
-            throw new ConflictException('학교 소식 정보가 없습니다.');
+            throw new ConflictException(MESSAGES.NEWS_UNVALID);
         }
         return news;
     }

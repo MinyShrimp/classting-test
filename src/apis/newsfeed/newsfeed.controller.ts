@@ -27,10 +27,10 @@ export class NewsfeedController {
 
     @Get('/')
     @ApiOperation({
-        summary: '뉴스 피드 조회 API',
-        description: '개인 뉴스 피드 조회 API',
+        summary: '뉴스피드 조회 API',
+        description: '개인 뉴스피드 조회 API',
     })
-    @ApiOkResponse({ description: '뉴스 피드 목록' })
+    @ApiOkResponse({ description: '뉴스피드 목록' })
     async getMyNewsfeed(
         @Payload() payload: IPayload, //
     ): Promise<NewsfeedEntity[]> {

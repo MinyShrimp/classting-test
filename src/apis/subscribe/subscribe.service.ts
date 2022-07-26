@@ -1,6 +1,7 @@
 import { Injectable, ConflictException } from '@nestjs/common';
 
 import { IPayload } from 'src/commons/auth/payload.interface';
+import { MESSAGES } from 'src/commons/message/message.enum';
 
 import { UserService } from '../user/user.service';
 import { SchoolService } from '../school/school.service';
@@ -28,7 +29,7 @@ export class SubscribeService {
     ): Promise<SubscribeEntity> {
         const check = await this.subscribeRepository.checkByCK(dto);
         if (!check) {
-            throw new ConflictException('구독 정보를 찾을 수 없습니다.');
+            throw new ConflictException(MESSAGES.SUBSCRIBE_UNVALID);
         }
         return check;
     }
@@ -41,7 +42,7 @@ export class SubscribeService {
     ): Promise<void> {
         const check = await this.subscribeRepository.checkByCK(dto);
         if (check) {
-            throw new ConflictException('이미 구독이 되어있습니다.');
+            throw new ConflictException(MESSAGES.SUBSCRIBE_OVERLAP);
         }
     }
 
@@ -76,9 +77,7 @@ export class SubscribeService {
         const school = await this.schoolService.checkValid(dto.schoolID);
 
         if (school.userID === user.id) {
-            throw new ConflictException(
-                '해당 학교 관리자가 구독을 할 수 없습니다.',
-            );
+            throw new ConflictException(MESSAGES.SUBSCRIBE_AUTH);
         }
 
         return await this.subscribeRepository.create({
