@@ -18,14 +18,23 @@ export class UserEntity {
     @Column()
     name: string;
 
-    @Column()
+    @Column({ unique: true })
     nickName: string;
 
-    @Column()
+    @Column({ unique: true })
     email: string;
 
     @Column()
     pwd: string;
+
+    @Column({ default: false })
+    isLogin: boolean;
+
+    @Column({ nullable: true })
+    loginAt: Date;
+
+    @Column({ nullable: true })
+    logoutAt: Date;
 
     @CreateDateColumn()
     createAt: Date;
