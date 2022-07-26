@@ -14,7 +14,10 @@ export class HttpExceptionFilter implements ExceptionFilter<HttpException> {
     constructor() {}
 
     catch(exception: HttpException, host: ArgumentsHost) {
-        host.switchToHttp().getResponse().status(400).send(exception.message);
+        host.switchToHttp()
+            .getResponse()
+            .status(exception.getStatus())
+            .send(exception.message);
         return exception;
     }
 }

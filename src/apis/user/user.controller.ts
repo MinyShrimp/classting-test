@@ -5,6 +5,7 @@ import {
     ApiOkResponse,
     ApiConflictResponse,
 } from '@nestjs/swagger';
+import { MESSAGES } from 'src/commons/message/message.enum';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UserService } from './user.service';
 
@@ -23,12 +24,12 @@ export class UserController {
         summary: '회원가입 API',
         description: '유저 회원가입',
     })
-    @ApiOkResponse({ description: '회원 가입이 완료되었습니다.' })
-    @ApiConflictResponse({ description: '이메일이나 닉네임이 중복되었습니다.' })
+    @ApiOkResponse({ description: MESSAGES.SIGNUP_SUCCESS })
+    @ApiConflictResponse({ description: MESSAGES.USER_OVERLAP })
     async create(
         @Body() body: CreateUserDto, //
     ): Promise<string> {
         await this.userService.create(body);
-        return '회원 가입이 완료되었습니다.';
+        return MESSAGES.SIGNUP_SUCCESS;
     }
 }

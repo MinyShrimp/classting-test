@@ -1,10 +1,12 @@
 import {
-    ConflictException,
     Injectable,
+    ConflictException,
     UnauthorizedException,
 } from '@nestjs/common';
 
 import { IPayload } from 'src/commons/auth/payload.interface';
+import { MESSAGES } from 'src/commons/message/message.enum';
+
 import { UserRepository } from '../user/entities/user.repository';
 
 import { CreateSchoolDto } from './dto/createSchool.dto';
@@ -24,12 +26,25 @@ export class SchoolService {
     /**
      * 중복 검사
      */
+    async checkValid(
+        schoolID: string, //
+    ): Promise<SchoolEntity> {
+        const school = await this.schoolRepository.getOneByID(schoolID);
+        if (!school) {
+            throw new ConflictException(MESSAGES.SCHOOL_UNVALID);
+        }
+        return school;
+    }
+
+    /**
+     * 중복 검사
+     */
     async checkOverlapName(
         name: string, //
     ): Promise<void> {
         const school = await this.schoolRepository.getOneByName(name);
         if (school) {
-            throw new ConflictException('이미 존재하는 학교입니다.');
+            throw new ConflictException(MESSAGES.SCHOOL_OVERLAP);
         }
     }
 
@@ -66,10 +81,7 @@ export class SchoolService {
         }
 
         // 학교 페이지 조회
-        const school = await this.schoolRepository.getOneByID(dto.id);
-        if (!school) {
-            throw new ConflictException('학교 정보를 찾을 수 없습니다.');
-        }
+        const school = await this.checkValid(dto.id);
 
         // 회원 조회
         const user = await this.userRepository.getOneByEmail(payload.email);
@@ -92,10 +104,7 @@ export class SchoolService {
         dto: DeleteSchoolDto, //
     ): Promise<boolean> {
         // 학교 페이지 조회
-        const school = await this.schoolRepository.getOneByID(dto.id);
-        if (!school) {
-            throw new ConflictException('학교 정보를 찾을 수 없습니다.');
-        }
+        const school = await this.checkValid(dto.id);
 
         // 회원 조회
         const user = await this.userRepository.getOneByEmail(payload.email);

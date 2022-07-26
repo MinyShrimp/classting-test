@@ -3,11 +3,13 @@ import { Response } from 'express';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
+import { MESSAGES } from 'src/commons/message/message.enum';
+import { IPayload, IPayloadSub } from 'src/commons/auth/payload.interface';
+
 import { UserRepository } from '../user/entities/user.repository';
 
 import { LoginDto } from './dto/login.dto';
 import { UserEntity } from '../user/entities/user.entity';
-import { IPayload, IPayloadSub } from 'src/commons/auth/payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -102,9 +104,7 @@ export class AuthService {
     ): Promise<UserEntity> {
         const user = await this.userRepository.getOneByEmail(email);
         if (!user) {
-            throw new ConflictException(
-                '회원 데이터가 없습니다. 이메일을 확인해주세요.',
-            );
+            throw new ConflictException(MESSAGES.USER_UNVALID);
         }
         return user;
     }
@@ -125,7 +125,7 @@ export class AuthService {
             hashPwd: user.pwd,
         });
         if (!checkPwd) {
-            throw new ConflictException('비밀번호를 확인해주세요.');
+            throw new ConflictException(MESSAGES.USER_PASSWORD_UNVALID);
         }
 
         // 로그인

@@ -12,6 +12,7 @@ import {
 
 import { Payload } from 'src/commons/auth/payload.param';
 import { IPayload } from 'src/commons/auth/payload.interface';
+import { MESSAGES } from 'src/commons/message/message.enum';
 
 import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
@@ -29,7 +30,7 @@ export class AuthController {
         description: '유저 로그인',
     })
     @ApiOkResponse({ description: 'Json Web Token' })
-    @ApiConflictResponse({ description: '회원 정보가 없습니다.' })
+    @ApiConflictResponse({ description: MESSAGES.USER_UNVALID })
     async login(
         @Body() body: LoginDto, //
         @Response() res: express.Response,
@@ -44,15 +45,13 @@ export class AuthController {
         description: '유저 로그아웃',
     })
     @ApiBearerAuth('access-token')
-    @ApiOkResponse({ description: '로그아웃이 완료되었습니다.' })
-    @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+    @ApiOkResponse({ description: MESSAGES.LOGOUT_SUCCESS })
+    @ApiUnauthorizedResponse({ description: MESSAGES.UNAUTHORIZED })
     async logout(
         @Payload() payload: IPayload, //
     ): Promise<string> {
         const result = await this.authService.logout(payload);
-        return result
-            ? '로그아웃이 완료되었습니다.'
-            : '로그아웃을 실패했습니다.';
+        return result ? MESSAGES.LOGOUT_SUCCESS : MESSAGES.LOGOUT_FAILED;
     }
 
     @UseGuards(AuthGuard('jwtRefreshGuard'))
@@ -62,7 +61,7 @@ export class AuthController {
         description: 'AccessToken 재발급',
     })
     @ApiOkResponse({ description: 'Json Web Token' })
-    @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+    @ApiUnauthorizedResponse({ description: MESSAGES.UNAUTHORIZED })
     async restore(
         @Payload() payload: IPayload, //
     ): Promise<string> {

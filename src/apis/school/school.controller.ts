@@ -8,18 +8,27 @@ import {
     UseGuards,
     Controller,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+    ApiTags,
+    ApiOperation,
+    ApiBearerAuth,
+    ApiOkResponse,
+    ApiUnauthorizedResponse,
+    ApiConflictResponse,
+} from '@nestjs/swagger';
 
 import { Payload } from 'src/commons/auth/payload.param';
 import { IPayload } from 'src/commons/auth/payload.interface';
+import { MESSAGES } from 'src/commons/message/message.enum';
 
 import { CreateSchoolDto } from './dto/createSchool.dto';
 import { UpdateSchoolDto } from './dto/updateSchool.dto';
 import { DeleteSchoolDto } from './dto/deleteSchool.dto';
 
-import { SchoolService } from './school.service';
 import { SchoolEntity } from './entities/school.entity';
 import { SchoolRepository } from './entities/school.repository';
+
+import { SchoolService } from './school.service';
 
 @Controller('admin/school')
 @UseGuards(AuthGuard('jwtAdminGuard'))
@@ -31,11 +40,13 @@ export class SchoolController {
         private readonly schoolRepository: SchoolRepository,
     ) {}
 
-    @Get('/')
+    @Get('/my')
     @ApiOperation({
         summary: '학교 페이지 조회 API',
         description: '내가 생성한 학교 페이지 목록 조회',
     })
+    @ApiOkResponse({ description: '내가 생성한 학교 페이지 목록' })
+    @ApiUnauthorizedResponse({ description: MESSAGES.UNAUTHORIZED })
     async getMySchool(
         @Payload() payload: IPayload, //
     ): Promise<SchoolEntity[]> {
@@ -47,12 +58,15 @@ export class SchoolController {
         summary: '학교 페이지 생성 API',
         description: '학교 페이지 생성',
     })
+    @ApiOkResponse({ description: MESSAGES.SCHOOL_CREATE_SUCCESS })
+    @ApiConflictResponse({ description: MESSAGES.SCHOOL_OVERLAP })
+    @ApiUnauthorizedResponse({ description: MESSAGES.UNAUTHORIZED })
     async createSchool(
         @Payload() payload: IPayload,
         @Body() dto: CreateSchoolDto, //
     ): Promise<string> {
         await this.schoolService.create(payload, dto);
-        return '학교 페이지 생성에 성공했습니다.';
+        return MESSAGES.SCHOOL_CREATE_SUCCESS;
     }
 
     @Put('/')
@@ -60,12 +74,17 @@ export class SchoolController {
         summary: '학교 페이지 수정 API',
         description: '학교 페이지 정보 수정',
     })
+    @ApiOkResponse({ description: MESSAGES.SCHOOL_UPDATE_SUCCESS })
+    @ApiConflictResponse({ description: MESSAGES.SCHOOL_UNVALID })
+    @ApiUnauthorizedResponse({ description: MESSAGES.UNAUTHORIZED })
     async updateSchool(
         @Payload() payload: IPayload,
         @Body() dto: UpdateSchoolDto, //
     ): Promise<string> {
         const result = await this.schoolService.update(payload, dto);
-        return result ? '수정을 완료했습니다.' : '수정을 실패했습니다.';
+        return result
+            ? MESSAGES.SCHOOL_UPDATE_SUCCESS
+            : MESSAGES.SCHOOL_UPDATE_FAILED;
     }
 
     @Delete('/')
@@ -73,11 +92,16 @@ export class SchoolController {
         summary: '학교 페이지 삭제 API',
         description: '학교 페이지 정보 삭제',
     })
+    @ApiOkResponse({ description: MESSAGES.SCHOOL_DELETE_SUCCESS })
+    @ApiConflictResponse({ description: MESSAGES.SCHOOL_UNVALID })
+    @ApiUnauthorizedResponse({ description: MESSAGES.UNAUTHORIZED })
     async deleteSchool(
         @Payload() payload: IPayload,
         @Body() dto: DeleteSchoolDto, //
     ): Promise<string> {
         const result = await this.schoolService.delete(payload, dto);
-        return result ? '삭제를 완료했습니다.' : '삭제를 실패했습니다.';
+        return result
+            ? MESSAGES.SCHOOL_DELETE_SUCCESS
+            : MESSAGES.SCHOOL_DELETE_FAILED;
     }
 }

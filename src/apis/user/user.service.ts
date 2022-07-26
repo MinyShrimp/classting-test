@@ -6,6 +6,7 @@ import { UserClassRepository } from '../userClass/entities/userClass.repository'
 import { UserEntity } from './entities/user.entity';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UserRepository } from './entities/user.repository';
+import { MESSAGES } from 'src/commons/message/message.enum';
 
 @Injectable()
 export class UserService {
@@ -32,7 +33,7 @@ export class UserService {
     }): Promise<void> {
         const check = await this.userRepository.checkOverlap(dto);
         if (check) {
-            throw new ConflictException('이메일이나 닉네임이 중복되었습니다.');
+            throw new ConflictException(MESSAGES.USER_OVERLAP);
         }
     }
 
