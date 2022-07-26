@@ -58,15 +58,50 @@ NestJS, Docker, TypeORM, MySQL
 
 ### 2022-07-26
 
--   erd 작성 ( ERD Cloud )
--   보일러 플로이트 작성
-    -   exception filter
-    -   swagger
-    -   jwt, passport
-    -   typeorm
-    -   docker, docker-compose
--   유저 회원가입, 로그인, 로그아웃, RestoreToken API 구현 ( JWT 기반 )
--   학교 페이지 CRUD API 구현
--   학교 소식 CUD API 구현
+#### erd 작성 ( ERD Cloud )
+
+#### 보일러 플로이트 작성
+
+-   exception filter
+-   swagger
+-   jwt, passport
+-   typeorm
+-   docker, docker-compose
+
+#### 유저 회원가입, 로그인, 로그아웃, RestoreToken API 구현 ( JWT 기반 )
+
+|      |               |             |
+| ---- | ------------- | ----------- |
+| POST | /auth/signup  | 회원가입    |
+| POST | /auth/login   | 로그인      |
+| POST | /auth/logout  | 로그아웃    |
+| POST | /auth/restore | 토큰 재발급 |
+
+#### 학교 페이지 CRUD API 구현
+
+|        |                  |                                   |
+| ------ | ---------------- | --------------------------------- |
+| GET    | /admin/school/my | 자기가 만든 학교 페이지 목록 조회 |
+| POST   | /admin/school    | 새로운 학교 페이지 생성           |
+| PUT    | /admin/school    | 학교 페이지 정보 수정             |
+| DELETE | /admin/school    | 학교 페이지 삭제                  |
+
+#### 학교 소식 CUD API 구현
+
+|        |                    |                       |
+| ------ | ------------------ | --------------------- |
+| POST   | /admin/school/news | 새로운 학교 소식 생성 |
+| PUT    | /admin/school/news | 학교 소식 수정        |
+| PATCH  | /admin/school/news | 학교 소식 삭제 취소   |
+| DELETE | /admin/school/news | 학교 소식 삭제        |
 
 ### 2022-07-27
+
+#### 구독 CRUD API 구현
+
+|        |                             |                          |
+| ------ | --------------------------- | ------------------------ |
+| GET    | /api/subscribe/list         | 구독 중인 학교 목록 조회 |
+| GET    | /api/subscribe/news/:school | 학교별 소식 조회         |
+| POST   | /api/subscribe              | 구독                     |
+| DELETE | /api/subscribe              | 구독 취소                |
