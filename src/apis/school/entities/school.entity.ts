@@ -40,5 +40,5 @@ export class SchoolEntity {
         () => SchoolNewsEntity,
         (news) => news.school, //
     )
-    news: SchoolEntity[];
+    news: SchoolNewsEntity[];
 }

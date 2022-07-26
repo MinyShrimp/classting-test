@@ -1,30 +1,28 @@
-import {
-    Entity,
-    ManyToOne,
-    CreateDateColumn,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Entity, ManyToOne, PrimaryColumn, CreateDateColumn } from 'typeorm';
 
 import { UserEntity } from 'src/apis/user/entities/user.entity';
 import { SchoolEntity } from 'src/apis/school/entities/school.entity';
 
 @Entity({ name: 'subscribe' })
 export class SubscribeEntity {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-
-    @CreateDateColumn()
-    createAt: Date;
-
     @ManyToOne(
         () => SchoolEntity,
-        { onDelete: 'SET NULL' }, //
+        { cascade: true, onDelete: 'CASCADE', primary: true }, //
     )
     school: SchoolEntity;
 
+    @PrimaryColumn({ name: 'schoolId' })
+    schoolID: string;
+
     @ManyToOne(
         () => UserEntity,
-        { onDelete: 'SET NULL' }, //
+        { cascade: true, onDelete: 'CASCADE', primary: true }, //
     )
     user: UserEntity;
+
+    @PrimaryColumn({ name: 'userId' })
+    userID: string;
+
+    @CreateDateColumn()
+    createAt: Date;
 }
