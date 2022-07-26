@@ -78,16 +78,6 @@ export class SubscribeController {
     }
 
     /**
-     * 구독 중인 모든 학교의 소식 조회 ( 최신순 )
-     */
-    @Get('/newsfeed')
-    @ApiOperation({
-        summary: '뉴스피드 API',
-        description: '구독 중인 모든 학교의 소식 조회 ( 최신순 )',
-    })
-    getSchoolNewsAll() {}
-
-    /**
      * 구독
      */
     @Post('/')
@@ -95,13 +85,13 @@ export class SubscribeController {
         summary: '구독 API',
         description: '구독',
     })
-    @ApiOkResponse({ description: '구독했습니다.' })
+    @ApiOkResponse({ description: MESSAGES.SUBSCRIBE_CREATE_SUCCESS })
     async create(
         @Payload() payload: IPayload,
         @Body() dto: SubscribeDto, //
     ): Promise<string> {
         await this.subscribeService.create(payload, dto);
-        return '구독했습니다.';
+        return MESSAGES.SUBSCRIBE_CREATE_SUCCESS;
     }
 
     /**
@@ -112,12 +102,14 @@ export class SubscribeController {
         summary: '구독 취소 API',
         description: '구독 취소',
     })
-    @ApiOkResponse({ description: '구독을 취소했습니다.' })
+    @ApiOkResponse({ description: MESSAGES.SUBSCRIBE_CANCLE_SUCCESS })
     async delete(
         @Payload() payload: IPayload,
         @Body() dto: SubscribeDto, //
     ): Promise<string> {
         const result = await this.subscribeService.delete(payload, dto);
-        return result ? '구독을 취소했습니다.' : '구독 취소를 실패했습니다.';
+        return result
+            ? MESSAGES.SUBSCRIBE_CANCLE_SUCCESS
+            : MESSAGES.UNKNOWN_FAILED;
     }
 }

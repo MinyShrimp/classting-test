@@ -18,6 +18,9 @@ import { SubscribeController } from './subscribe.controller';
         UserModule,
         SchoolModule,
     ],
+    exports: [
+        SubscribeRepository, //
+    ],
     controllers: [
         SubscribeController, //
     ],

@@ -5,9 +5,12 @@ import {
 } from '@nestjs/common';
 
 import { IPayload } from 'src/commons/auth/payload.interface';
+import { MESSAGES } from 'src/commons/message/message.enum';
 
 import { UserService } from '../user/user.service';
 import { SchoolService } from '../school/school.service';
+import { NewsfeedService } from '../newsfeed/newsfeed.service';
+import { SubscribeRepository } from '../subscribe/entities/subscribe.repository';
 
 import { CreateSchoolNewsDto } from './dto/createSchoolNews.dto';
 import { UpdateSchoolNewsDto } from './dto/updateSchoolNews.dto';
@@ -21,6 +24,8 @@ export class SchoolNewsService {
     constructor(
         private readonly userService: UserService,
         private readonly schoolService: SchoolService,
+        private readonly newsfeedService: NewsfeedService,
+        private readonly subscribeRepository: SubscribeRepository,
         private readonly schoolNewsRepository: SchoolNewsRepository, //
     ) {}
 
@@ -32,7 +37,7 @@ export class SchoolNewsService {
     ): Promise<SchoolNewsEntity> {
         const news = await this.schoolNewsRepository.getOneByID(schoolNewsID);
         if (!news) {
-            throw new ConflictException('학교 소식 정보가 없습니다.');
+            throw new ConflictException(MESSAGES.NEWS_UNVALID);
         }
         return news;
     }
@@ -47,7 +52,7 @@ export class SchoolNewsService {
             schoolNewsID,
         );
         if (!news) {
-            throw new ConflictException('학교 소식 정보가 없습니다.');
+            throw new ConflictException(MESSAGES.NEWS_UNVALID);
         }
         return news;
     }
@@ -73,11 +78,22 @@ export class SchoolNewsService {
         }
 
         // 생성
-        return await this.schoolNewsRepository.create({
+        const result = await this.schoolNewsRepository.create({
             ...rest,
             user: user,
             school: school,
         });
+
+        // 이 학교를 구독 중인 유저 목록 조회
+        const subs = await this.subscribeRepository.getUserList(schoolID);
+
+        // newsfeed에 생성 ( 비동기 )
+        this.newsfeedService.giveNewsToSubs({
+            userIDs: subs.map((v) => v.userID),
+            newsID: result.id,
+        });
+
+        return result;
     }
 
     /**

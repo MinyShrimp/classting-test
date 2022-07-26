@@ -1,45 +1,37 @@
 import {
     Entity,
     Column,
-    OneToMany,
     ManyToOne,
     CreateDateColumn,
-    UpdateDateColumn,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { UserEntity } from 'src/apis/user/entities/user.entity';
 import { SchoolNewsEntity } from 'src/apis/schoolNews/entities/schoolNews.entity';
 
-@Entity({ name: 'school' })
-export class SchoolEntity {
+@Entity({ name: 'newsfeed' })
+export class NewsfeedEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-
-    @Column({ unique: true })
-    name: string;
-
-    @Column()
-    local: string;
 
     @CreateDateColumn()
     createAt: Date;
 
-    @UpdateDateColumn()
-    updateAt: Date;
-
     @ManyToOne(
         () => UserEntity,
-        { cascade: true, onDelete: 'SET NULL' }, //
+        { cascade: true, onDelete: 'CASCADE' }, //
     )
     user: UserEntity;
 
     @Column({ name: 'userId', nullable: true })
     userID: string;
 
-    @OneToMany(
+    @ManyToOne(
         () => SchoolNewsEntity,
-        (news) => news.school, //
+        { cascade: true, onDelete: 'CASCADE' }, //
     )
-    news: SchoolNewsEntity[];
+    news: SchoolNewsEntity;
+
+    @Column({ name: 'newsId', nullable: true })
+    newsID: string;
 }

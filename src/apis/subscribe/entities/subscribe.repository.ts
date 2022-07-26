@@ -34,14 +34,25 @@ export class SubscribeRepository {
     async getList(
         userID: string, //
     ): Promise<SubscribeEntity[]> {
-        const entities = await this.subscribeRepository
+        return await this.subscribeRepository
             .createQueryBuilder('ss')
             .select(['ss.createAt'])
             .leftJoinAndSelect('ss.school', 'school')
             .where('ss.userID=:userID', { userID: userID })
             .getMany();
+    }
 
-        return entities;
+    /**
+     * 학교를 구독 중인 유저 목록 조회
+     */
+    async getUserList(
+        schoolID: string, //
+    ): Promise<SubscribeEntity[]> {
+        return await this.subscribeRepository
+            .createQueryBuilder('ss')
+            .select(['ss.createAt', 'ss.userID', 'ss.schoolID'])
+            .where('ss.schoolID=:schoolID', { schoolID: schoolID })
+            .getMany();
     }
 
     /**
@@ -70,13 +81,6 @@ export class SubscribeRepository {
 
         return entity.school.news;
     }
-
-    /**
-     * 구독 중인 모든 학교의 소식 조회 ( 최신순 )
-     */
-    async getSchoolNewsAll(
-        userID: string, //
-    ) {}
 
     /**
      * 생성
