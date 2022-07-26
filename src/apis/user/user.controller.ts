@@ -1,5 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { CreateUserDto } from './dto/createUser';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { CreateUserDto } from './dto/createUser.dto';
 import { UserService } from './user.service';
 
 @Controller('api')
@@ -8,6 +8,9 @@ export class UserController {
         private readonly userService: UserService, //
     ) {}
 
+    /**
+     * 회원 가입
+     */
     @Post('/signup')
     async create(
         @Body() body: CreateUserDto, //
