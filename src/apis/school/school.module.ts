@@ -16,6 +16,10 @@ import { SchoolController } from './school.controller';
         ]),
         UserModule,
     ],
+    exports: [
+        SchoolService,
+        SchoolRepository, //
+    ],
     controllers: [
         SchoolController, //
     ],

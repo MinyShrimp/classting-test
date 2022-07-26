@@ -1,4 +1,3 @@
-import { SchoolEntity } from 'src/apis/school/entities/school.entity';
 import {
     Entity,
     Column,
@@ -8,6 +7,9 @@ import {
     DeleteDateColumn,
     PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { SchoolEntity } from 'src/apis/school/entities/school.entity';
+import { UserEntity } from 'src/apis/user/entities/user.entity';
 
 @Entity({ name: 'school_news' })
 export class SchoolNewsEntity {
@@ -34,4 +36,10 @@ export class SchoolNewsEntity {
         { cascade: true, onDelete: 'SET NULL' }, //
     )
     school: SchoolEntity;
+
+    @ManyToOne(
+        () => UserEntity,
+        { cascade: true, onDelete: 'SET NULL' }, //
+    )
+    user: UserEntity;
 }

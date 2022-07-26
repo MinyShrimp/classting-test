@@ -6,16 +6,18 @@ import { JwtService } from '@nestjs/jwt';
 import { MESSAGES } from 'src/commons/message/message.enum';
 import { IPayload, IPayloadSub } from 'src/commons/auth/payload.interface';
 
+import { UserEntity } from '../user/entities/user.entity';
+import { UserService } from '../user/user.service';
 import { UserRepository } from '../user/entities/user.repository';
 
 import { LoginDto } from './dto/login.dto';
-import { UserEntity } from '../user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly jwtService: JwtService,
-        private readonly userRepository: UserRepository, //
+        private readonly userService: UserService, //
+        private readonly userRepository: UserRepository,
     ) {}
 
     /**
@@ -97,19 +99,6 @@ export class AuthService {
     }
 
     /**
-     * 존재 확인
-     */
-    async checkValid(
-        email: string, //
-    ): Promise<UserEntity> {
-        const user = await this.userRepository.getOneByEmail(email);
-        if (!user) {
-            throw new ConflictException(MESSAGES.USER_UNVALID);
-        }
-        return user;
-    }
-
-    /**
      * 로그인
      */
     async login(
@@ -117,7 +106,7 @@ export class AuthService {
         dto: LoginDto, //
     ): Promise<string> {
         // 회원 체크
-        const user = await this.checkValid(dto.email);
+        const user = await this.userService.checkValidByEmail(dto.email);
 
         // 비밀번호 확인
         const checkPwd = this.comparePwd({
@@ -154,7 +143,7 @@ export class AuthService {
         payload: IPayload, //
     ): Promise<string> {
         // 회원 체크
-        const user = await this.checkValid(payload.email);
+        const user = await this.userService.checkValidByEmail(payload.email);
 
         // access token
         return this.getAccessToken(user);
