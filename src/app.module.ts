@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 
 // Module //
 import { SchoolModule } from './apis/school/school.module';
+import { NewsfeedModule } from './apis/newsfeed/newsfeed.module';
 import { SubscribeModule } from './apis/subscribe/subscribe.module';
 import { SchoolNewsModule } from './apis/schoolNews/schoolNews.module';
 
@@ -50,6 +51,7 @@ import { UserClassModule } from './apis/userClass/userClass.module';
         ///////////////////////////////////////////////////////////////////////////
         // Module //
         SchoolModule,
+        NewsfeedModule,
         SubscribeModule,
         SchoolNewsModule,
 
