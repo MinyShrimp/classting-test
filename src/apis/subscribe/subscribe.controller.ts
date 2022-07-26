@@ -78,16 +78,6 @@ export class SubscribeController {
     }
 
     /**
-     * 구독 중인 모든 학교의 소식 조회 ( 최신순 )
-     */
-    @Get('/newsfeed')
-    @ApiOperation({
-        summary: '뉴스피드 API',
-        description: '구독 중인 모든 학교의 소식 조회 ( 최신순 )',
-    })
-    getSchoolNewsAll() {}
-
-    /**
      * 구독
      */
     @Post('/')

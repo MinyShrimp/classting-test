@@ -72,13 +72,6 @@ export class SubscribeRepository {
     }
 
     /**
-     * 구독 중인 모든 학교의 소식 조회 ( 최신순 )
-     */
-    async getSchoolNewsAll(
-        userID: string, //
-    ) {}
-
-    /**
      * 생성
      */
     async create(dto: {
