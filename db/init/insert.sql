@@ -1,0 +1,1 @@
+INSERT into user_class(id, description) VALUES('USER', '학생'), ('ADMIN', '관리자');
