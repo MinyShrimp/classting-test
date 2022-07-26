@@ -13,8 +13,8 @@ import {
     ApiOperation,
     ApiBearerAuth,
     ApiOkResponse,
-    ApiUnauthorizedResponse,
     ApiConflictResponse,
+    ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 import { Payload } from 'src/commons/auth/payload.param';
@@ -34,6 +34,7 @@ import { SchoolService } from './school.service';
 @UseGuards(AuthGuard('jwtAdminGuard'))
 @ApiTags('학교 페이지')
 @ApiBearerAuth('access-token')
+@ApiUnauthorizedResponse({ description: MESSAGES.UNAUTHORIZED })
 export class SchoolController {
     constructor(
         private readonly schoolService: SchoolService, //
@@ -60,7 +61,6 @@ export class SchoolController {
     })
     @ApiOkResponse({ description: MESSAGES.SCHOOL_CREATE_SUCCESS })
     @ApiConflictResponse({ description: MESSAGES.SCHOOL_OVERLAP })
-    @ApiUnauthorizedResponse({ description: MESSAGES.UNAUTHORIZED })
     async createSchool(
         @Payload() payload: IPayload,
         @Body() dto: CreateSchoolDto, //
@@ -76,7 +76,6 @@ export class SchoolController {
     })
     @ApiOkResponse({ description: MESSAGES.SCHOOL_UPDATE_SUCCESS })
     @ApiConflictResponse({ description: MESSAGES.SCHOOL_UNVALID })
-    @ApiUnauthorizedResponse({ description: MESSAGES.UNAUTHORIZED })
     async updateSchool(
         @Payload() payload: IPayload,
         @Body() dto: UpdateSchoolDto, //
@@ -94,7 +93,6 @@ export class SchoolController {
     })
     @ApiOkResponse({ description: MESSAGES.SCHOOL_DELETE_SUCCESS })
     @ApiConflictResponse({ description: MESSAGES.SCHOOL_UNVALID })
-    @ApiUnauthorizedResponse({ description: MESSAGES.UNAUTHORIZED })
     async deleteSchool(
         @Payload() payload: IPayload,
         @Body() dto: DeleteSchoolDto, //

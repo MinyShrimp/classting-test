@@ -7,7 +7,7 @@ import {
 import { IPayload } from 'src/commons/auth/payload.interface';
 import { MESSAGES } from 'src/commons/message/message.enum';
 
-import { UserRepository } from '../user/entities/user.repository';
+import { UserService } from '../user/user.service';
 
 import { CreateSchoolDto } from './dto/createSchool.dto';
 import { UpdateSchoolDto } from './dto/updateSchool.dto';
@@ -19,7 +19,7 @@ import { SchoolRepository } from './entities/school.repository';
 @Injectable()
 export class SchoolService {
     constructor(
-        private readonly userRepository: UserRepository,
+        private readonly userSerivce: UserService,
         private readonly schoolRepository: SchoolRepository, //
     ) {}
 
@@ -59,7 +59,7 @@ export class SchoolService {
         await this.checkOverlapName(dto.name);
 
         // 회원 조회
-        const user = await this.userRepository.getOneByEmail(payload.email);
+        const user = await this.userSerivce.checkValid(payload.id);
 
         // 생성
         return await this.schoolRepository.create({
@@ -84,7 +84,7 @@ export class SchoolService {
         const school = await this.checkValid(dto.id);
 
         // 회원 조회
-        const user = await this.userRepository.getOneByEmail(payload.email);
+        const user = await this.userSerivce.checkValid(payload.id);
 
         // 학교 페이지를 등록한 사람과 같은 사람인지 검사
         if (school.user.id !== user.id) {
@@ -107,7 +107,7 @@ export class SchoolService {
         const school = await this.checkValid(dto.id);
 
         // 회원 조회
-        const user = await this.userRepository.getOneByEmail(payload.email);
+        const user = await this.userSerivce.checkValid(payload.id);
 
         // 학교 페이지를 등록한 사람과 같은 사람인지 검사
         if (school.user.id !== user.id) {

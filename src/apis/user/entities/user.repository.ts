@@ -25,6 +25,16 @@ export class UserRepository {
         return check ? true : false;
     }
 
+    async getOneByID(
+        userID: string, //
+    ): Promise<UserEntity> {
+        return await this.userRepository
+            .createQueryBuilder('user')
+            .select(['user.id'])
+            .where('user.id=:userID', { userID: userID })
+            .getOne();
+    }
+
     async getOneByEmail(
         email: string, //
     ): Promise<UserEntity> {
