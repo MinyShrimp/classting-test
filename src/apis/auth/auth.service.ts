@@ -95,6 +95,21 @@ export class AuthService {
     }
 
     /**
+     * 존재 확인
+     */
+    async checkValid(
+        email: string, //
+    ): Promise<UserEntity> {
+        const user = await this.userRepository.getOneByEmail(email);
+        if (!user) {
+            throw new ConflictException(
+                '회원 데이터가 없습니다. 이메일을 확인해주세요.',
+            );
+        }
+        return user;
+    }
+
+    /**
      * 로그인
      */
     async login(
@@ -102,12 +117,7 @@ export class AuthService {
         dto: LoginDto, //
     ): Promise<string> {
         // 회원 체크
-        const user = await this.userRepository.getOneByEmail(dto.email);
-        if (!user) {
-            throw new ConflictException(
-                '회원 데이터가 없습니다. 이메일을 확인해주세요.',
-            );
-        }
+        const user = await this.checkValid(dto.email);
 
         // 비밀번호 확인
         const checkPwd = this.comparePwd({
@@ -144,12 +154,7 @@ export class AuthService {
         payload: IPayload, //
     ): Promise<string> {
         // 회원 체크
-        const user = await this.userRepository.getOneByEmail(payload.email);
-        if (!user) {
-            throw new ConflictException(
-                '회원 데이터가 없습니다. 이메일을 확인해주세요.',
-            );
-        }
+        const user = await this.checkValid(payload.email);
 
         // access token
         return this.getAccessToken(user);

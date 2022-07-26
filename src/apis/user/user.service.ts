@@ -29,12 +29,11 @@ export class UserService {
     async checkOverlap(dto: {
         email: string;
         nickName: string; //
-    }): Promise<boolean> {
+    }): Promise<void> {
         const check = await this.userRepository.checkOverlap(dto);
         if (check) {
             throw new ConflictException('이메일이나 닉네임이 중복되었습니다.');
         }
-        return true;
     }
 
     /**
