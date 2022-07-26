@@ -10,7 +10,7 @@
 
 [] 학교 관리자는 학교를 페이지를 운영하여 학교 소식을 발행할 수 있다.
 
--   [] 학교 관리자는 지역, 학교명으로 학교 페이지를 생성할 수 있다.
+-   [x] 학교 관리자는 지역, 학교명으로 학교 페이지를 생성할 수 있다.
 -   [] 학교 관리자는 학교 페이지 내에 소식을 작성할 수 있다.
 -   [] 학교 관리자는 작성된 소식을 삭제할 수 있다.
 -   [] 학교 관리자는 작성된 소식을 수정할 수 있다.
@@ -53,3 +53,19 @@ NestJS, Docker, TypeORM, MySQL
 | 깃헙     | https://github.com/MinyShrimp/classting-test |
 | ERDCloud | https://www.erdcloud.com/d/3KR8RFx3vKekF4Lk4 |
 |          |                                              |
+
+## 진행도
+
+### 2022-07-26
+
+-   erd 작성 ( ERD Cloud )
+-   보일러 플로이트 작성
+    -   exception filter
+    -   swagger
+    -   jwt, passport
+    -   typeorm
+    -   docker, docker-compose
+-   유저 회원가입, 로그인, 로그아웃, RestoreToken API 구현 ( JWT 기반 )
+-   학교 페이지 CRUD API 구현
+
+### 2022-07-27

@@ -3,11 +3,13 @@ import { Response } from 'express';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
+import { MESSAGES } from 'src/commons/message/message.enum';
+import { IPayload, IPayloadSub } from 'src/commons/auth/payload.interface';
+
 import { UserRepository } from '../user/entities/user.repository';
 
 import { LoginDto } from './dto/login.dto';
 import { UserEntity } from '../user/entities/user.entity';
-import { IPayload, IPayloadSub } from 'src/commons/auth/payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -95,6 +97,19 @@ export class AuthService {
     }
 
     /**
+     * 존재 확인
+     */
+    async checkValid(
+        email: string, //
+    ): Promise<UserEntity> {
+        const user = await this.userRepository.getOneByEmail(email);
+        if (!user) {
+            throw new ConflictException(MESSAGES.USER_UNVALID);
+        }
+        return user;
+    }
+
+    /**
      * 로그인
      */
     async login(
@@ -102,12 +117,7 @@ export class AuthService {
         dto: LoginDto, //
     ): Promise<string> {
         // 회원 체크
-        const user = await this.userRepository.getOneByEmail(dto.email);
-        if (!user) {
-            throw new ConflictException(
-                '회원 데이터가 없습니다. 이메일을 확인해주세요.',
-            );
-        }
+        const user = await this.checkValid(dto.email);
 
         // 비밀번호 확인
         const checkPwd = this.comparePwd({
@@ -115,7 +125,7 @@ export class AuthService {
             hashPwd: user.pwd,
         });
         if (!checkPwd) {
-            throw new ConflictException('비밀번호를 확인해주세요.');
+            throw new ConflictException(MESSAGES.USER_PASSWORD_UNVALID);
         }
 
         // 로그인
@@ -144,12 +154,7 @@ export class AuthService {
         payload: IPayload, //
     ): Promise<string> {
         // 회원 체크
-        const user = await this.userRepository.getOneByEmail(payload.email);
-        if (!user) {
-            throw new ConflictException(
-                '회원 데이터가 없습니다. 이메일을 확인해주세요.',
-            );
-        }
+        const user = await this.checkValid(payload.email);
 
         // access token
         return this.getAccessToken(user);
