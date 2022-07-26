@@ -21,9 +21,8 @@ export class SchoolRepository {
     ): Promise<SchoolEntity> {
         return await this.schoolRepository
             .createQueryBuilder('school')
-            .select(['school.id', 'user.id'])
+            .select(['school.id', 'school.userID'])
             .where('school.id=:id', { id })
-            .leftJoin('school.user', 'user')
             .getOne();
     }
 
@@ -48,10 +47,8 @@ export class SchoolRepository {
                 'school.local',
                 'school.createAt',
                 'school.updateAt',
-                'user.id',
             ])
-            .leftJoin('school.user', 'user')
-            .where('user.id=:userID', { userID: userID })
+            .where('school.userID=:userID', { userID: userID })
             .getMany();
     }
 

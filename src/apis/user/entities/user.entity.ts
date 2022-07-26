@@ -47,7 +47,10 @@ export class UserEntity {
 
     @ManyToOne(
         () => UserClassEntity,
-        { eager: true, onDelete: 'SET NULL' }, //
+        { onDelete: 'SET NULL' }, //
     )
     userClass: UserClassEntity;
+
+    @Column({ name: 'userClassId', nullable: true })
+    userClassID: string;
 }

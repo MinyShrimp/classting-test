@@ -33,6 +33,9 @@ export class SchoolEntity {
     )
     user: UserEntity;
 
+    @Column({ name: 'userId', nullable: true })
+    userID: string;
+
     @OneToMany(
         () => SchoolNewsEntity,
         (news) => news.school, //

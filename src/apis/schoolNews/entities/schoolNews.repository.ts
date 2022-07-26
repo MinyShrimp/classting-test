@@ -18,8 +18,7 @@ export class SchoolNewsRepository {
     ): Promise<SchoolNewsEntity> {
         return await this.schoolNewsRepository
             .createQueryBuilder('news')
-            .select(['news.id', 'user.id'])
-            .leftJoin('news.user', 'user')
+            .select(['news.id', 'news.userID'])
             .where('news.id=:newsID', { newsID: newsID })
             .getOne();
     }
@@ -30,8 +29,7 @@ export class SchoolNewsRepository {
         return await this.schoolNewsRepository
             .createQueryBuilder('news')
             .withDeleted()
-            .select(['news.id', 'user.id'])
-            .leftJoin('news.user', 'user')
+            .select(['news.id', 'news.userID'])
             .where('news.id=:newsID', { newsID: newsID })
             .getOne();
     }

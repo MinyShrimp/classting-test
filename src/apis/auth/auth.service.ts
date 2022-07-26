@@ -43,7 +43,7 @@ export class AuthService {
         };
 
         // 권한 처리
-        if (user.userClass.id === 'ADMIN') {
+        if (user.userClassID === 'ADMIN') {
             payload['isAdmin'] = true;
         }
 

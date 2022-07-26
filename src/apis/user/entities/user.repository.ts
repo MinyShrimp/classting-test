@@ -45,10 +45,9 @@ export class UserRepository {
                 'user.nickName',
                 'user.email',
                 'user.pwd',
-                'uc.id',
+                'user.userClassID',
             ])
             .where('user.email=:email', { email: email })
-            .leftJoin('user.userClass', 'uc')
             .getOne();
     }
 
