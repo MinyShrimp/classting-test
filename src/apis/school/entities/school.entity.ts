@@ -1,5 +1,3 @@
-import { SchoolNewsEntity } from 'src/apis/schoolNews/entities/schoolNews.entity';
-import { UserEntity } from 'src/apis/user/entities/user.entity';
 import {
     Entity,
     Column,
@@ -9,6 +7,9 @@ import {
     UpdateDateColumn,
     PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { UserEntity } from 'src/apis/user/entities/user.entity';
+import { SchoolNewsEntity } from 'src/apis/schoolNews/entities/schoolNews.entity';
 
 @Entity({ name: 'school' })
 export class SchoolEntity {
