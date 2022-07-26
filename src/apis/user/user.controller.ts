@@ -23,7 +23,7 @@ export class UserController {
         summary: '회원가입 API',
         description: '유저 회원가입',
     })
-    @ApiOkResponse({ description: 'Json Web Token' })
+    @ApiOkResponse({ description: '회원 가입이 완료되었습니다.' })
     @ApiConflictResponse({ description: '이메일이나 닉네임이 중복되었습니다.' })
     async create(
         @Body() body: CreateUserDto, //
