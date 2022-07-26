@@ -7,14 +7,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 // Config //
 import { ConfigModule } from '@nestjs/config';
+
+// Module //
 import { SchoolModule } from './apis/school/school.module';
 import { SubscribeModule } from './apis/subscribe/subscribe.module';
 
 import { UserModule } from './apis/user/user.module';
 import { UserClassModule } from './apis/userClass/userClass.module';
 import { SchoolNewsModule } from './apis/schoolNews/schoolNews.module';
-
-// Module //
 
 ///////////////////////////////////////////////////////////////////////////
 @Module({
