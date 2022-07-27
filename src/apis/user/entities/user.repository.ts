@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 import { UserEntity } from './user.entity';
 
@@ -100,5 +100,13 @@ export class UserRepository {
                 logoutAt: new Date(),
             },
         );
+    }
+
+    /**
+     * 테스트용 함수
+     * 내용물을 모두 비운다.
+     */
+    async clear(): Promise<DeleteResult> {
+        return await this.userRepository.delete({});
     }
 }

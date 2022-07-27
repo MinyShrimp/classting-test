@@ -2,6 +2,7 @@ import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 
 import { MESSAGES } from '../../src/commons/message/message.enum';
+import { UserRepository } from '../../src/apis/user/entities/user.repository';
 
 import { CreateTestModule, sendRequest } from '../createTestModule';
 
@@ -12,9 +13,24 @@ const parseJwt = (token: string) => {
 
 describe('인증 통합 테스트', () => {
     let app: INestApplication;
+    let userRepository: UserRepository;
+
+    const info = {
+        name: '김회민',
+        nickName: '고래잡는새우',
+        email: 'ksk7584@gmail.com',
+        pwd: 'qwer1234!',
+    };
 
     beforeAll(async () => {
-        app = await CreateTestModule();
+        const load = await CreateTestModule();
+        app = load.app;
+        userRepository = load.module.get(UserRepository);
+    });
+
+    afterEach(async () => {
+        // 모두 비우기
+        await userRepository.clear();
     });
 
     it('be defined', () => {
@@ -22,19 +38,14 @@ describe('인증 통합 테스트', () => {
     });
 
     describe('POST /auth', () => {
-        const info = {
-            name: '김회민',
-            nickName: '고래잡는새우',
-            email: 'ksk7584@gmail.com',
-            pwd: 'qwer1234!',
-        };
-
-        beforeAll(async () => {
-            // 회원 가입
-            await sendRequest(app).post('/api/signup').send(info);
-        });
-
+        ///////////////////////////////////////////////////////////////////
+        // 로그인
         describe('POST /auth/login', () => {
+            beforeEach(async () => {
+                // 회원 가입
+                await sendRequest(app).post('/api/signup').send(info);
+            });
+
             it('존재하지 않는 계정', async () => {
                 const res = await request(app.getHttpServer())
                     .post('/auth/login')
@@ -65,7 +76,7 @@ describe('인증 통합 테스트', () => {
                         pwd: info.pwd,
                     })
                     .expect(400);
-                expect(res.text).toEqual('Bad Request Exception');
+                expect(res.text).toEqual(MESSAGES.BAD_REQUEST);
             });
 
             it('비밀번호 형식 틀림', async () => {
@@ -76,7 +87,7 @@ describe('인증 통합 테스트', () => {
                         pwd: 'qwer1234',
                     })
                     .expect(400);
-                expect(res.text).toEqual('Bad Request Exception');
+                expect(res.text).toEqual(MESSAGES.BAD_REQUEST);
             });
 
             it('정상 테스트', async () => {
@@ -111,17 +122,23 @@ describe('인증 통합 테스트', () => {
             });
         });
 
+        ///////////////////////////////////////////////////////////////////
+        // 로그아웃
         describe('POST /auth/logout', () => {
             let token: string;
 
             beforeEach(async () => {
+                // 회원 가입
+                await sendRequest(app).post('/api/signup').send(info);
+
+                // 로그인
                 const res = await request(app.getHttpServer())
                     .post('/auth/login')
                     .send({
                         email: info.email,
                         pwd: info.pwd,
                     })
-                    .expect(200);
+                    .expect(201);
                 token = res.text;
             });
 
@@ -143,17 +160,23 @@ describe('인증 통합 테스트', () => {
             });
         });
 
+        ///////////////////////////////////////////////////////////////////
+        // 토큰 재발급
         describe('POST /auth/restore', () => {
             let token: string;
 
             beforeEach(async () => {
+                // 회원 가입
+                await sendRequest(app).post('/api/signup').send(info);
+
+                // 로그인
                 const res = await request(app.getHttpServer())
                     .post('/auth/login')
                     .send({
                         email: info.email,
                         pwd: info.pwd,
                     })
-                    .expect(200);
+                    .expect(201);
 
                 const cookies = res.headers['set-cookie'] as Array<string>;
 

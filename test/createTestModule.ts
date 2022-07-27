@@ -7,21 +7,21 @@ import { AppTestModule } from '../src/app.test.module';
 
 export const CreateTestModule = (() => {
     let app: INestApplication;
+    let module: TestingModule;
 
     return app
-        ? () => Promise.resolve(app)
+        ? () => Promise.resolve({ app, module })
         : async () => {
-              const moduleFixture: TestingModule =
-                  await Test.createTestingModule({
-                      imports: [AppTestModule],
-                  }).compile();
+              module = await Test.createTestingModule({
+                  imports: [AppTestModule],
+              }).compile();
 
-              app = moduleFixture.createNestApplication();
+              app = module.createNestApplication();
               app.useGlobalPipes(new ValidationPipe());
               app.useGlobalFilters(new HttpExceptionFilter());
               await app.init();
 
-              return app;
+              return { app, module };
           };
 })();
 

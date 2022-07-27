@@ -2,6 +2,7 @@ export const MESSAGES = {
     ///////////////////////////////////////////////////////////////////
     // GENERALs //
     UNAUTHORIZED: 'Unauthorized',
+    BAD_REQUEST: 'Bad Request Exception',
     UNVALID_ACCESS: '잘못된 접근입니다.',
     UNKNOWN_FAILED: '알 수 없는 이유로 실패했습니다.',
 
