@@ -1,4 +1,3 @@
-import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 
 import { MESSAGES } from '../../commons/message/message.enum';
@@ -46,7 +45,7 @@ describe('인증 통합 테스트', () => {
         });
 
         it('정상 테스트', async () => {
-            const res = await request(app.getHttpServer())
+            const res = await sendRequest(app)
                 .post('/auth/login')
                 .send({
                     email: info.email,
@@ -78,7 +77,7 @@ describe('인증 통합 테스트', () => {
 
         describe('오류', () => {
             it('존재하지 않는 계정', async () => {
-                const res = await request(app.getHttpServer())
+                const res = await sendRequest(app)
                     .post('/auth/login')
                     .send({
                         email: 'test@gmail.com',
@@ -89,7 +88,7 @@ describe('인증 통합 테스트', () => {
             });
 
             it('다른 비밀번호 입력', async () => {
-                const res = await request(app.getHttpServer())
+                const res = await sendRequest(app)
                     .post('/auth/login')
                     .send({
                         email: info.email,
@@ -102,7 +101,7 @@ describe('인증 통합 테스트', () => {
 
         describe('형식 불량', () => {
             it('이메일 형식 틀림', async () => {
-                const res = await request(app.getHttpServer())
+                const res = await sendRequest(app)
                     .post('/auth/login')
                     .send({
                         email: 'test',
@@ -113,7 +112,7 @@ describe('인증 통합 테스트', () => {
             });
 
             it('비밀번호 형식 틀림', async () => {
-                const res = await request(app.getHttpServer())
+                const res = await sendRequest(app)
                     .post('/auth/login')
                     .send({
                         email: info.email,
@@ -135,7 +134,7 @@ describe('인증 통합 테스트', () => {
             await sendRequest(app).post('/api/signup').send(info);
 
             // 로그인
-            const res = await request(app.getHttpServer())
+            const res = await sendRequest(app)
                 .post('/auth/login')
                 .send({
                     email: info.email,
@@ -148,7 +147,7 @@ describe('인증 통합 테스트', () => {
         it('정상 테스트', async () => {
             expect(token).toBeDefined();
 
-            const res = await request(app.getHttpServer())
+            const res = await sendRequest(app)
                 .post('/auth/logout')
                 .set('Authorization', `Bearer ${token}`)
                 .expect(201);
@@ -156,9 +155,7 @@ describe('인증 통합 테스트', () => {
         });
 
         it('토큰 누락', async () => {
-            const res = await request(app.getHttpServer())
-                .post('/auth/logout')
-                .expect(401);
+            const res = await sendRequest(app).post('/auth/logout').expect(401);
             expect(res.text).toEqual(MESSAGES.UNAUTHORIZED);
         });
     });
@@ -173,7 +170,7 @@ describe('인증 통합 테스트', () => {
             await sendRequest(app).post('/api/signup').send(info);
 
             // 로그인
-            const res = await request(app.getHttpServer())
+            const res = await sendRequest(app)
                 .post('/auth/login')
                 .send({
                     email: info.email,
@@ -192,7 +189,7 @@ describe('인증 통합 테스트', () => {
         it('정상 테스트', async () => {
             expect(token).toBeDefined();
 
-            const res = await request(app.getHttpServer())
+            const res = await sendRequest(app)
                 .post('/auth/restore')
                 .set('cookie', `refreshToken=${token}`)
                 .expect(201);
@@ -205,7 +202,7 @@ describe('인증 통합 테스트', () => {
         });
 
         it('토큰 누락', async () => {
-            const res = await request(app.getHttpServer())
+            const res = await sendRequest(app)
                 .post('/auth/restore')
                 .expect(401);
             expect(res.text).toEqual(MESSAGES.UNAUTHORIZED);

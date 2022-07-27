@@ -1,4 +1,3 @@
-import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 
 import { MESSAGES } from '../../commons/message/message.enum';
@@ -9,6 +8,13 @@ import { CreateTestModule, sendRequest } from '../createTestModule';
 describe('유저 통합 테스트', () => {
     let app: INestApplication;
     let userRepository: UserRepository;
+
+    const info = {
+        name: '김회민',
+        nickName: '고래잡는새우2',
+        email: 'ksk7774@gmail.com',
+        pwd: 'qwer1234!',
+    };
 
     beforeAll(async () => {
         const load = await CreateTestModule();
@@ -24,14 +30,9 @@ describe('유저 통합 테스트', () => {
         expect(app).toBeDefined();
     });
 
+    ///////////////////////////////////////////////////////////////////
+    // 회원가입
     describe('POST /api/signup', () => {
-        const info = {
-            name: '김회민',
-            nickName: '고래잡는새우2',
-            email: 'ksk7774@gmail.com',
-            pwd: 'qwer1234!',
-        };
-
         it('정상 테스트', async () => {
             const res = await sendRequest(app)
                 .post('/api/signup')
