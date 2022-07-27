@@ -109,7 +109,7 @@ export class AuthService {
         const user = await this.userService.checkValidByEmail(dto.email);
 
         // 비밀번호 확인
-        const checkPwd = this.comparePwd({
+        const checkPwd = await this.comparePwd({
             pwd: dto.pwd,
             hashPwd: user.pwd,
         });

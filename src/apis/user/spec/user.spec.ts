@@ -57,27 +57,12 @@ describe('User service', () => {
     });
 
     describe('회원가입', () => {
-        const infos = [
-            {
-                name: '김회민',
-                nickName: '고래잡는새우',
-                email: 'ksk7584@gmail.com',
-                pwd: 'qwer1234!',
-            },
-            {
-                name: '김회민',
-                nickName: '새우잡는고래',
-                email: 'ksk7774@gmail.com',
-                pwd: 'qwer1234!',
-            },
-            {
-                name: '김회민',
-                nickName: 'docker',
-                email: 'gcp1534@gmail.com',
-                pwd: 'qwer1234!',
-            },
-        ];
-        const info = infos[0];
+        const info = {
+            name: '김회민',
+            nickName: '고래잡는새우',
+            email: 'ksk7584@gmail.com',
+            pwd: 'qwer1234!',
+        };
 
         beforeEach(() => {
             mockUserRepo.createQueryBuilder().getOne.mockReturnValue(undefined);
@@ -109,21 +94,6 @@ describe('User service', () => {
                 expect(e).toBeInstanceOf(ConflictException);
                 expect(e.message).toBe(MESSAGES.USER_OVERLAP);
             }
-        });
-
-        it('n개 가입', async () => {
-            expect(mockUserRepo.createQueryBuilder().getOne()).toBeUndefined();
-
-            const results = await Promise.all(
-                infos.map((info) => userService.create(info)),
-            );
-
-            results.forEach((user, i) => {
-                expect(user.name).toEqual(infos[i].name);
-                expect(user.nickName).toEqual(infos[i].nickName);
-                expect(user.email).toEqual(infos[i].email);
-                expect(user.pwd).not.toEqual(infos[i].pwd);
-            });
         });
     });
 });
