@@ -2,10 +2,10 @@ import { v4 } from 'uuid';
 import { INestApplication } from '@nestjs/common';
 
 import { MESSAGES } from '../../commons/message/message.enum';
+import { UserService } from '../../apis/user/user.service';
 import { SchoolEntity } from '../../apis/school/entities/school.entity';
 import { UserRepository } from '../../apis/user/entities/user.repository';
 import { SchoolRepository } from '../../apis/school/entities/school.repository';
-import { UserService } from '../../apis/user/user.service';
 
 import { CreateTestModule, sendRequest } from '../createTestModule';
 
@@ -96,6 +96,7 @@ describe('학교 페이지 테스트', () => {
     it('be defined', () => {
         expect(app).toBeDefined();
         expect(token).toBeDefined();
+        expect(tokens).toBeDefined();
         expect(userRepository).toBeDefined();
         expect(schoolRepository).toBeDefined();
     });
