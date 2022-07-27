@@ -37,15 +37,46 @@ describe('인증 통합 테스트', () => {
         expect(app).toBeDefined();
     });
 
-    describe('POST /auth', () => {
-        ///////////////////////////////////////////////////////////////////
-        // 로그인
-        describe('POST /auth/login', () => {
-            beforeEach(async () => {
-                // 회원 가입
-                await sendRequest(app).post('/api/signup').send(info);
-            });
+    ///////////////////////////////////////////////////////////////////
+    // 로그인
+    describe('POST /auth/login', () => {
+        beforeEach(async () => {
+            // 회원 가입
+            await sendRequest(app).post('/api/signup').send(info);
+        });
 
+        it('정상 테스트', async () => {
+            const res = await request(app.getHttpServer())
+                .post('/auth/login')
+                .send({
+                    email: info.email,
+                    pwd: info.pwd,
+                })
+                .expect(201);
+
+            const cookies = res.headers['set-cookie'] as Array<string>;
+            const access = res.text;
+
+            expect(cookies).toBeDefined();
+            expect(access).toBeDefined();
+
+            const rToken = cookies.filter((cookie) =>
+                cookie.includes('refreshToken'),
+            )[0];
+            const refresh = rToken
+                .split(';')
+                .map((v) => v.trim().split('='))[0][1];
+
+            const aPayload = parseJwt(access);
+            const rPayload = parseJwt(refresh);
+
+            expect(
+                aPayload['email'] === rPayload['email'] &&
+                    info.email === aPayload['email'],
+            ).toEqual(true);
+        });
+
+        describe('오류', () => {
             it('존재하지 않는 계정', async () => {
                 const res = await request(app.getHttpServer())
                     .post('/auth/login')
@@ -67,7 +98,9 @@ describe('인증 통합 테스트', () => {
                     .expect(409);
                 expect(res.text).toEqual(MESSAGES.USER_PASSWORD_UNVALID);
             });
+        });
 
+        describe('형식 불량', () => {
             it('이메일 형식 틀림', async () => {
                 const res = await request(app.getHttpServer())
                     .post('/auth/login')
@@ -89,124 +122,93 @@ describe('인증 통합 테스트', () => {
                     .expect(400);
                 expect(res.text).toEqual(MESSAGES.BAD_REQUEST);
             });
+        });
+    });
 
-            it('정상 테스트', async () => {
-                const res = await request(app.getHttpServer())
-                    .post('/auth/login')
-                    .send({
-                        email: info.email,
-                        pwd: info.pwd,
-                    })
-                    .expect(201);
+    ///////////////////////////////////////////////////////////////////
+    // 로그아웃
+    describe('POST /auth/logout', () => {
+        let token: string;
 
-                const cookies = res.headers['set-cookie'] as Array<string>;
-                const access = res.text;
+        beforeEach(async () => {
+            // 회원 가입
+            await sendRequest(app).post('/api/signup').send(info);
 
-                expect(cookies).toBeDefined();
-                expect(access).toBeDefined();
-
-                const rToken = cookies.filter((cookie) =>
-                    cookie.includes('refreshToken'),
-                )[0];
-                const refresh = rToken
-                    .split(';')
-                    .map((v) => v.trim().split('='))[0][1];
-
-                const aPayload = parseJwt(access);
-                const rPayload = parseJwt(refresh);
-
-                expect(
-                    aPayload['email'] === rPayload['email'] &&
-                        info.email === aPayload['email'],
-                ).toEqual(true);
-            });
+            // 로그인
+            const res = await request(app.getHttpServer())
+                .post('/auth/login')
+                .send({
+                    email: info.email,
+                    pwd: info.pwd,
+                })
+                .expect(201);
+            token = res.text;
         });
 
-        ///////////////////////////////////////////////////////////////////
-        // 로그아웃
-        describe('POST /auth/logout', () => {
-            let token: string;
+        it('정상 테스트', async () => {
+            expect(token).toBeDefined();
 
-            beforeEach(async () => {
-                // 회원 가입
-                await sendRequest(app).post('/api/signup').send(info);
-
-                // 로그인
-                const res = await request(app.getHttpServer())
-                    .post('/auth/login')
-                    .send({
-                        email: info.email,
-                        pwd: info.pwd,
-                    })
-                    .expect(201);
-                token = res.text;
-            });
-
-            it('토큰 누락', async () => {
-                const res = await request(app.getHttpServer())
-                    .post('/auth/logout')
-                    .expect(401);
-                expect(res.text).toEqual(MESSAGES.UNAUTHORIZED);
-            });
-
-            it('정상 테스트', async () => {
-                expect(token).toBeDefined();
-
-                const res = await request(app.getHttpServer())
-                    .post('/auth/logout')
-                    .set('Authorization', `Bearer ${token}`)
-                    .expect(201);
-                expect(res.text).toEqual(MESSAGES.LOGOUT_SUCCESS);
-            });
+            const res = await request(app.getHttpServer())
+                .post('/auth/logout')
+                .set('Authorization', `Bearer ${token}`)
+                .expect(201);
+            expect(res.text).toEqual(MESSAGES.LOGOUT_SUCCESS);
         });
 
-        ///////////////////////////////////////////////////////////////////
-        // 토큰 재발급
-        describe('POST /auth/restore', () => {
-            let token: string;
+        it('토큰 누락', async () => {
+            const res = await request(app.getHttpServer())
+                .post('/auth/logout')
+                .expect(401);
+            expect(res.text).toEqual(MESSAGES.UNAUTHORIZED);
+        });
+    });
 
-            beforeEach(async () => {
-                // 회원 가입
-                await sendRequest(app).post('/api/signup').send(info);
+    ///////////////////////////////////////////////////////////////////
+    // 토큰 재발급
+    describe('POST /auth/restore', () => {
+        let token: string;
 
-                // 로그인
-                const res = await request(app.getHttpServer())
-                    .post('/auth/login')
-                    .send({
-                        email: info.email,
-                        pwd: info.pwd,
-                    })
-                    .expect(201);
+        beforeEach(async () => {
+            // 회원 가입
+            await sendRequest(app).post('/api/signup').send(info);
 
-                const cookies = res.headers['set-cookie'] as Array<string>;
+            // 로그인
+            const res = await request(app.getHttpServer())
+                .post('/auth/login')
+                .send({
+                    email: info.email,
+                    pwd: info.pwd,
+                })
+                .expect(201);
 
-                const rToken = cookies.filter((cookie) =>
-                    cookie.includes('refreshToken'),
-                )[0];
-                token = rToken.split(';').map((v) => v.trim().split('='))[0][1];
-            });
+            const cookies = res.headers['set-cookie'] as Array<string>;
 
-            it('토큰 누락', async () => {
-                const res = await request(app.getHttpServer())
-                    .post('/auth/restore')
-                    .expect(401);
-                expect(res.text).toEqual(MESSAGES.UNAUTHORIZED);
-            });
+            const rToken = cookies.filter((cookie) =>
+                cookie.includes('refreshToken'),
+            )[0];
+            token = rToken.split(';').map((v) => v.trim().split('='))[0][1];
+        });
 
-            it('정상 테스트', async () => {
-                expect(token).toBeDefined();
+        it('정상 테스트', async () => {
+            expect(token).toBeDefined();
 
-                const res = await request(app.getHttpServer())
-                    .post('/auth/restore')
-                    .set('cookie', `refreshToken=${token}`)
-                    .expect(201);
+            const res = await request(app.getHttpServer())
+                .post('/auth/restore')
+                .set('cookie', `refreshToken=${token}`)
+                .expect(201);
 
-                const access = res.text;
-                expect(access).toBeDefined();
+            const access = res.text;
+            expect(access).toBeDefined();
 
-                const aPayload = parseJwt(access);
-                expect(info.email === aPayload['email']).toEqual(true);
-            });
+            const aPayload = parseJwt(access);
+            expect(info.email === aPayload['email']).toEqual(true);
+        });
+
+        it('토큰 누락', async () => {
+            const res = await request(app.getHttpServer())
+                .post('/auth/restore')
+                .expect(401);
+            expect(res.text).toEqual(MESSAGES.UNAUTHORIZED);
         });
     });
 });

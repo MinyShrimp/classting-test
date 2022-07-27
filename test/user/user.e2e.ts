@@ -24,7 +24,7 @@ describe('유저 통합 테스트', () => {
         expect(app).toBeDefined();
     });
 
-    describe('회원가입', () => {
+    describe('POST /api/signup', () => {
         const info = {
             name: '김회민',
             nickName: '고래잡는새우2',
@@ -32,16 +32,16 @@ describe('유저 통합 테스트', () => {
             pwd: 'qwer1234!',
         };
 
-        describe('POST /api/signup', () => {
-            it('정상 테스트', async () => {
-                const res = await sendRequest(app)
-                    .post('/api/signup')
-                    .send(info)
-                    .expect(201);
-                expect(res.text).toEqual(MESSAGES.SIGNUP_SUCCESS);
-            });
+        it('정상 테스트', async () => {
+            const res = await sendRequest(app)
+                .post('/api/signup')
+                .send(info)
+                .expect(201);
+            expect(res.text).toEqual(MESSAGES.SIGNUP_SUCCESS);
+        });
 
-            it('이메일 형식', async () => {
+        describe('형식 불량', () => {
+            it('이메일', async () => {
                 const res = await sendRequest(app)
                     .post('/api/signup')
                     .send({
@@ -52,7 +52,7 @@ describe('유저 통합 테스트', () => {
                 expect(res.text).toEqual(MESSAGES.BAD_REQUEST);
             });
 
-            it('비밀번호 형식', async () => {
+            it('비밀번호', async () => {
                 const res = await sendRequest(app)
                     .post('/api/signup')
                     .send({
@@ -63,7 +63,7 @@ describe('유저 통합 테스트', () => {
                 expect(res.text).toEqual(MESSAGES.BAD_REQUEST);
             });
 
-            it('이름 형식', async () => {
+            it('이름', async () => {
                 const res = await sendRequest(app)
                     .post('/api/signup')
                     .send({
@@ -74,7 +74,7 @@ describe('유저 통합 테스트', () => {
                 expect(res.text).toEqual(MESSAGES.BAD_REQUEST);
             });
 
-            it('닉네임 형식', async () => {
+            it('닉네임', async () => {
                 const res = await sendRequest(app)
                     .post('/api/signup')
                     .send({
@@ -86,12 +86,12 @@ describe('유저 통합 테스트', () => {
             });
         });
 
-        describe('POST /api/signup', () => {
+        describe('중복', () => {
             beforeEach(async () => {
                 await sendRequest(app).post('/api/signup').send(info);
             });
 
-            it('이메일 중복', async () => {
+            it('이메일', async () => {
                 const res = await sendRequest(app)
                     .post('/api/signup')
                     .send({
@@ -102,7 +102,7 @@ describe('유저 통합 테스트', () => {
                 expect(res.text).toEqual(MESSAGES.USER_OVERLAP);
             });
 
-            it('닉네임 중복', async () => {
+            it('닉네임', async () => {
                 const res = await sendRequest(app)
                     .post('/api/signup')
                     .send({
