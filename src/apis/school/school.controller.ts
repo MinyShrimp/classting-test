@@ -13,6 +13,7 @@ import {
     ApiOperation,
     ApiBearerAuth,
     ApiOkResponse,
+    ApiCreatedResponse,
     ApiConflictResponse,
     ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -59,7 +60,7 @@ export class SchoolController {
         summary: '학교 페이지 생성 API',
         description: '학교 페이지 생성',
     })
-    @ApiOkResponse({ description: MESSAGES.SCHOOL_CREATE_SUCCESS })
+    @ApiCreatedResponse({ description: MESSAGES.SCHOOL_CREATE_SUCCESS })
     @ApiConflictResponse({ description: MESSAGES.SCHOOL_OVERLAP })
     async createSchool(
         @Payload() payload: IPayload,

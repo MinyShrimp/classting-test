@@ -9,20 +9,18 @@ export const CreateTestModule = (() => {
     let app: INestApplication;
     let module: TestingModule;
 
-    return app
-        ? () => Promise.resolve({ app, module })
-        : async () => {
-              module = await Test.createTestingModule({
-                  imports: [AppTestModule],
-              }).compile();
+    return async () => {
+        module = await Test.createTestingModule({
+            imports: [AppTestModule],
+        }).compile();
 
-              app = module.createNestApplication();
-              app.useGlobalPipes(new ValidationPipe());
-              app.useGlobalFilters(new HttpExceptionFilter());
-              await app.init();
+        app = module.createNestApplication();
+        app.useGlobalPipes(new ValidationPipe());
+        app.useGlobalFilters(new HttpExceptionFilter());
+        await app.init();
 
-              return { app, module };
-          };
+        return { app, module };
+    };
 })();
 
 export const sendRequest = (app: INestApplication) => {

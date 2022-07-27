@@ -11,8 +11,8 @@ describe('유저 통합 테스트', () => {
 
     const info = {
         name: '김회민',
-        nickName: '고래잡는새우2',
-        email: 'ksk7774@gmail.com',
+        nickName: '회원가입_테스트',
+        email: 'signuptest@gmail.com',
         pwd: 'qwer1234!',
     };
 
@@ -23,7 +23,7 @@ describe('유저 통합 테스트', () => {
     });
 
     afterAll(async () => {
-        await userRepository.clear();
+        await userRepository.bulkDelete([info.email]);
     });
 
     it('be defined', () => {

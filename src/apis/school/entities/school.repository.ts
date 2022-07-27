@@ -70,4 +70,12 @@ export class SchoolRepository {
     ): Promise<DeleteResult> {
         return await this.schoolRepository.delete({ id: dto.id });
     }
+
+    /**
+     * 테스트용 함수
+     * 내용물을 모두 비운다.
+     */
+    async clear(): Promise<DeleteResult> {
+        return await this.schoolRepository.delete({});
+    }
 }

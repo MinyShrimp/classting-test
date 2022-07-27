@@ -49,27 +49,6 @@ export class UserRepository {
             .getOne();
     }
 
-    async getOneByNickName(
-        nickName: string, //
-    ): Promise<UserEntity> {
-        return await this.userRepository
-            .createQueryBuilder('user')
-            .select(['user.nickName'])
-            .where('user.nickName=:nickName', { nickName: nickName })
-            .getOne();
-    }
-
-    async getPwd(
-        email: string, //
-    ): Promise<string> {
-        const entity = await this.userRepository
-            .createQueryBuilder('user')
-            .select(['user.email', 'user.pwd'])
-            .where('user.email=:email', { email: email })
-            .getOne();
-        return entity.pwd;
-    }
-
     async create(
         dto: Partial<
             Omit<UserEntity, 'id' | 'createAt' | 'updateAt' | 'deleteAt'>
@@ -104,9 +83,30 @@ export class UserRepository {
 
     /**
      * 테스트용 함수
+     * 특정 유저를 관리자로 바꾼다
+     */
+    async setAdmin(
+        email: string, //
+    ): Promise<UpdateResult> {
+        return await this.userRepository.update(
+            { email: email },
+            { userClassID: 'ADMIN' },
+        );
+    }
+
+    /**
+     * 테스트용 함수
      * 내용물을 모두 비운다.
      */
-    async clear(): Promise<DeleteResult> {
-        return await this.userRepository.delete({});
+    async bulkDelete(
+        emails: Array<string>, //
+    ): Promise<DeleteResult[]> {
+        return await Promise.all(
+            emails.map((email) => {
+                return this.userRepository.delete({
+                    email: email,
+                });
+            }),
+        );
     }
 }

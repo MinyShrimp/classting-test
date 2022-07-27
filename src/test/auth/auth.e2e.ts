@@ -16,8 +16,8 @@ describe('인증 통합 테스트', () => {
 
     const info = {
         name: '김회민',
-        nickName: '고래잡는새우',
-        email: 'ksk7584@gmail.com',
+        nickName: '인증_테스트',
+        email: 'authtest@gmail.com',
         pwd: 'qwer1234!',
     };
 
@@ -28,8 +28,7 @@ describe('인증 통합 테스트', () => {
     });
 
     afterAll(async () => {
-        // 모두 비우기
-        await userRepository.clear();
+        await userRepository.bulkDelete([info.email]);
     });
 
     it('be defined', () => {
