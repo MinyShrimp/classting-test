@@ -188,3 +188,36 @@ NestJS, Docker, TypeORM, MySQL
         -   UUID 미입력
         -   이상한 UUID 입력
         -   토큰 누락
+
+#### 학교 구독 테스트 구현
+
+-   GET /api/subscribe/list
+    -   정상 테스트
+        -   빈 값
+        -   0, 1번 째 학교
+        -   2, 3번 째 학교
+    -   형식 불량
+        -   토큰 누락
+-   GET /api/subscribe/news/:school
+    -   정상 테스트
+        -   빈 값
+        -   0 ~ 4번 째 소식
+    -   형식 불량
+        -   토큰 누락
+        -   Param 누락
+        -   잘못된 Param
+-   POST /api/subscribe
+    -   정상 테스트
+    -   중복
+        -   동일한 관리자
+        -   동일한 사람이 동일한 학교에 두 번 요청함
+    -   형식 불량
+        -   토큰 누락
+        -   UUID 미입력
+        -   이상한 UUID 입력
+-   DELETE /api/subscribe
+    -   정상 테스트
+    -   형식 불량
+        -   토큰 누락
+        -   UUID 미입력
+        -   이상한 UUID 입력

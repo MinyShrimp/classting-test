@@ -96,8 +96,21 @@ export class SubscribeRepository {
      * 삭제
      */
     async delete(
-        dto: SubscribeCompositeKeyDto, //
+        ck: SubscribeCompositeKeyDto, //
     ): Promise<DeleteResult> {
-        return await this.subscribeRepository.delete({ ...dto });
+        return await this.subscribeRepository.delete({ ...ck });
+    }
+
+    /**
+     * 테스트용 함수
+     */
+    async bulkDelete(
+        cks: Array<SubscribeCompositeKeyDto>, //
+    ): Promise<DeleteResult[]> {
+        return await Promise.all(
+            cks.map((ck) => {
+                return this.subscribeRepository.delete({ ...ck });
+            }),
+        );
     }
 }

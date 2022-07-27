@@ -73,9 +73,14 @@ export class SchoolRepository {
 
     /**
      * 테스트용 함수
-     * 내용물을 모두 비운다.
      */
-    async clear(): Promise<DeleteResult> {
-        return await this.schoolRepository.delete({});
+    async bulkDelete(
+        names: Array<string>, //
+    ): Promise<DeleteResult[]> {
+        return await Promise.all(
+            names.map((name) => {
+                return this.schoolRepository.delete({ name });
+            }),
+        );
     }
 }

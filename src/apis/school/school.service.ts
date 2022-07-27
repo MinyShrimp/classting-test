@@ -24,7 +24,7 @@ export class SchoolService {
     ) {}
 
     /**
-     * 중복 검사
+     * 존재 검사
      */
     async checkValid(
         schoolID: string, //

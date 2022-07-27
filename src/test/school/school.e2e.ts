@@ -93,6 +93,13 @@ describe('학교 페이지 테스트', () => {
         await userRepository.bulkDelete(userInputs.map((input) => input.email));
     });
 
+    afterEach(async () => {
+        await schoolRepository.bulkDelete([
+            ...schoolInputs.map((v) => v.name),
+            '고래대학교',
+        ]);
+    });
+
     it('be defined', () => {
         expect(app).toBeDefined();
         expect(token).toBeDefined();
@@ -104,10 +111,6 @@ describe('학교 페이지 테스트', () => {
     ///////////////////////////////////////////////////////////////////
     // 자신이 생성한 학교 페이지 목록 조회
     describe('GET /admin/school/my', () => {
-        afterEach(async () => {
-            await schoolRepository.clear();
-        });
-
         describe('정상 테스트', () => {
             it('빈값', async () => {
                 const res = await sendRequest(app)
@@ -167,10 +170,6 @@ describe('학교 페이지 테스트', () => {
     ///////////////////////////////////////////////////////////////////
     // 학교 페이지 생성
     describe('POST /admin/school', () => {
-        afterEach(async () => {
-            await schoolRepository.clear();
-        });
-
         describe('정상 테스트', () => {
             it('단일 생성', async () => {
                 const res = await sendRequest(app)
@@ -262,10 +261,6 @@ describe('학교 페이지 테스트', () => {
     ///////////////////////////////////////////////////////////////////
     // 학교 페이지 수정
     describe('PUT /admin/school', () => {
-        afterEach(async () => {
-            await schoolRepository.clear();
-        });
-
         describe('정상 테스트', () => {
             let id: string;
 
@@ -476,10 +471,6 @@ describe('학교 페이지 테스트', () => {
     ///////////////////////////////////////////////////////////////////
     // 학교 페이지 삭제
     describe('DELETE /admin/school', () => {
-        afterEach(async () => {
-            await schoolRepository.clear();
-        });
-
         describe('정상 테스트', () => {
             let ids: Array<string>;
 

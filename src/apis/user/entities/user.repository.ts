@@ -96,7 +96,6 @@ export class UserRepository {
 
     /**
      * 테스트용 함수
-     * 내용물을 모두 비운다.
      */
     async bulkDelete(
         emails: Array<string>, //
