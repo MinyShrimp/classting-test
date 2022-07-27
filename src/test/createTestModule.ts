@@ -2,8 +2,8 @@ import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 
-import { HttpExceptionFilter } from '../src/commons/filter/http-exception.filter';
-import { AppTestModule } from '../src/app.test.module';
+import { HttpExceptionFilter } from '../commons/filter/http-exception.filter';
+import { AppTestModule } from '../app.test.module';
 
 export const CreateTestModule = (() => {
     let app: INestApplication;

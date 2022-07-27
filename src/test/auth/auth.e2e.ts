@@ -1,8 +1,8 @@
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 
-import { MESSAGES } from '../../src/commons/message/message.enum';
-import { UserRepository } from '../../src/apis/user/entities/user.repository';
+import { MESSAGES } from '../../commons/message/message.enum';
+import { UserRepository } from '../../apis/user/entities/user.repository';
 
 import { CreateTestModule, sendRequest } from '../createTestModule';
 
@@ -28,7 +28,7 @@ describe('인증 통합 테스트', () => {
         userRepository = load.module.get(UserRepository);
     });
 
-    afterEach(async () => {
+    afterAll(async () => {
         // 모두 비우기
         await userRepository.clear();
     });
