@@ -14,15 +14,13 @@ export class UserRepository {
     async checkOverlap(dto: {
         email: string;
         nickName: string;
-    }): Promise<boolean> {
-        const check = await this.userRepository
+    }): Promise<UserEntity> {
+        return await this.userRepository
             .createQueryBuilder('user')
             .select(['user.email'])
             .where('user.email=:email', { email: dto.email })
             .orWhere('user.nickName=:nickName', { nickName: dto.nickName })
             .getOne();
-
-        return check ? true : false;
     }
 
     async getOneByID(
