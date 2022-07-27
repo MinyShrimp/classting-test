@@ -2,7 +2,7 @@ import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { UserEntity } from 'src/apis/user/entities/user.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 
 import { SchoolEntity } from './school.entity';
 import { CreateSchoolDto } from '../dto/createSchool.dto';

@@ -55,7 +55,6 @@ NestJS, Docker, TypeORM, MySQL
 | -------- | -------------------------------------------- |
 | 깃헙     | https://github.com/MinyShrimp/classting-test |
 | ERDCloud | https://www.erdcloud.com/d/3KR8RFx3vKekF4Lk4 |
-|          |                                              |
 
 ## 진행도
 

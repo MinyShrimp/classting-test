@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 
-import { JwtAdminStrategy } from 'src/commons/auth/jwt-admin.strategy';
-import { JwtAccessStrategy } from 'src/commons/auth/jwt-access.strategy';
-import { JwtRefreshStrategy } from 'src/commons/auth/jwt-refresh.strategy';
+import { JwtAdminStrategy } from '../../commons/auth/jwt-admin.strategy';
+import { JwtAccessStrategy } from '../../commons/auth/jwt-access.strategy';
+import { JwtRefreshStrategy } from '../../commons/auth/jwt-refresh.strategy';
 
 import { UserModule } from '../user/user.module';
 

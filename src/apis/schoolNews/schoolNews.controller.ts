@@ -16,9 +16,9 @@ import {
     ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
-import { Payload } from 'src/commons/auth/payload.param';
-import { IPayload } from 'src/commons/auth/payload.interface';
-import { MESSAGES } from 'src/commons/message/message.enum';
+import { Payload } from '../../commons/auth/payload.param';
+import { IPayload } from '../../commons/auth/payload.interface';
+import { MESSAGES } from '../../commons/message/message.enum';
 
 import { CreateSchoolNewsDto } from './dto/createSchoolNews.dto';
 import { UpdateSchoolNewsDto } from './dto/updateSchoolNews.dto';

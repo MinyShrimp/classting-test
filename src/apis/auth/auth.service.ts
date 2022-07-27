@@ -3,8 +3,8 @@ import { Response } from 'express';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { MESSAGES } from 'src/commons/message/message.enum';
-import { IPayload, IPayloadSub } from 'src/commons/auth/payload.interface';
+import { MESSAGES } from '../../commons/message/message.enum';
+import { IPayload, IPayloadSub } from '../../commons/auth/payload.interface';
 
 import { UserEntity } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';

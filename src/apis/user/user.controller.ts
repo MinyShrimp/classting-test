@@ -6,7 +6,7 @@ import {
     ApiConflictResponse,
 } from '@nestjs/swagger';
 
-import { MESSAGES } from 'src/commons/message/message.enum';
+import { MESSAGES } from '../../commons/message/message.enum';
 
 import { CreateUserDto } from './dto/createUser.dto';
 
