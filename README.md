@@ -55,7 +55,6 @@ NestJS, Docker, TypeORM, MySQL
 | -------- | -------------------------------------------- |
 | 깃헙     | https://github.com/MinyShrimp/classting-test |
 | ERDCloud | https://www.erdcloud.com/d/3KR8RFx3vKekF4Lk4 |
-|          |                                              |
 
 ## 진행도
 
@@ -114,3 +113,111 @@ NestJS, Docker, TypeORM, MySQL
 |     |               |                   |
 | --- | ------------- | ----------------- |
 | GET | /api/newsfeed | 뉴스피드 조회 API |
+
+#### 회원 테스트 구현
+
+-   POST /api/signup 회원가입
+    -   정상 테스트
+    -   형식 불량
+        -   이메일
+        -   비밀번호
+        -   이름
+        -   닉네임
+    -   중복
+        -   이메일
+        -   닉네임
+
+#### 인증 테스트 구현
+
+-   POST /auth/login 로그인
+    -   정상 테스트
+    -   오류
+        -   존재하지 않는 계정 ( 이메일 )
+        -   다른 비밀번호 입력
+    -   형식 불량
+        -   이메일
+        -   비밀번호
+-   POST /auth/logout 로그아웃
+    -   정상 테스트
+    -   토큰 누락
+-   POST /auth/restore 토큰 재발급
+    -   정상 테스트
+    -   토큰 누락
+
+### 2022-07-28
+
+#### 학교 페이지 테스트 구현
+
+-   GET /admin/school/my
+    -   정상 테스트
+        -   빈 값
+        -   생성한 학교 페이지 목록
+    -   미권한 유저
+    -   형식 불량
+        -   토큰 누락
+-   POST /admin/school
+    -   정상 테스트
+        -   단일 생성
+        -   다중 생성
+    -   미권한 유저
+    -   형식 불량
+        -   이름 누락
+        -   지역 누락
+        -   토큰 누락
+    -   중복
+        -   이름 중복
+-   PUT /admin/school
+    -   정상 테스트
+        -   이름, 지역 변경
+        -   이름 변경
+        -   지역 변경
+    -   미권한 유저
+    -   미권한 관리자
+    -   중복
+        -   이름 중복
+    -   형식 불량
+        -   UUID 미입력
+        -   이상한 UUID 입력
+        -   토큰 누락
+-   DELETE /admin/school
+    -   정상 테스트
+        -   삭제
+    -   미권한 유저
+    -   미권한 관리자
+    -   형식 불량
+        -   UUID 미입력
+        -   이상한 UUID 입력
+        -   토큰 누락
+
+#### 학교 구독 테스트 구현
+
+-   GET /api/subscribe/list
+    -   정상 테스트
+        -   빈 값
+        -   0, 1번 째 학교
+        -   2, 3번 째 학교
+    -   형식 불량
+        -   토큰 누락
+-   GET /api/subscribe/news/:school
+    -   정상 테스트
+        -   빈 값
+        -   0 ~ 4번 째 소식
+    -   형식 불량
+        -   토큰 누락
+        -   Param 누락
+        -   잘못된 Param
+-   POST /api/subscribe
+    -   정상 테스트
+    -   중복
+        -   동일한 관리자
+        -   동일한 사람이 동일한 학교에 두 번 요청함
+    -   형식 불량
+        -   토큰 누락
+        -   UUID 미입력
+        -   이상한 UUID 입력
+-   DELETE /api/subscribe
+    -   정상 테스트
+    -   형식 불량
+        -   토큰 누락
+        -   UUID 미입력
+        -   이상한 UUID 입력

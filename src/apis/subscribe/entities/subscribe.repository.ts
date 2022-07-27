@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 
-import { UserEntity } from 'src/apis/user/entities/user.entity';
-import { SchoolEntity } from 'src/apis/school/entities/school.entity';
-import { SchoolNewsEntity } from 'src/apis/schoolNews/entities/schoolNews.entity';
+import { UserEntity } from '../../user/entities/user.entity';
+import { SchoolEntity } from '../../school/entities/school.entity';
+import { SchoolNewsEntity } from '../../schoolNews/entities/schoolNews.entity';
 
 import { SubscribeCompositeKeyDto } from '../dto/ck.dto';
 
@@ -96,8 +96,21 @@ export class SubscribeRepository {
      * 삭제
      */
     async delete(
-        dto: SubscribeCompositeKeyDto, //
+        ck: SubscribeCompositeKeyDto, //
     ): Promise<DeleteResult> {
-        return await this.subscribeRepository.delete({ ...dto });
+        return await this.subscribeRepository.delete({ ...ck });
+    }
+
+    /**
+     * 테스트용 함수
+     */
+    async bulkDelete(
+        cks: Array<SubscribeCompositeKeyDto>, //
+    ): Promise<DeleteResult[]> {
+        return await Promise.all(
+            cks.map((ck) => {
+                return this.subscribeRepository.delete({ ...ck });
+            }),
+        );
     }
 }

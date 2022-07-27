@@ -1,12 +1,13 @@
 import * as bcrypt from 'bcryptjs';
 import { ConflictException, Injectable } from '@nestjs/common';
 
+import { MESSAGES } from '../../commons/message/message.enum';
+
 import { UserClassRepository } from '../userClass/entities/userClass.repository';
 
 import { UserEntity } from './entities/user.entity';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UserRepository } from './entities/user.repository';
-import { MESSAGES } from 'src/commons/message/message.enum';
 
 @Injectable()
 export class UserService {

@@ -1,7 +1,7 @@
 import { Entity, ManyToOne, PrimaryColumn, CreateDateColumn } from 'typeorm';
 
-import { UserEntity } from 'src/apis/user/entities/user.entity';
-import { SchoolEntity } from 'src/apis/school/entities/school.entity';
+import { UserEntity } from '../../user/entities/user.entity';
+import { SchoolEntity } from '../../school/entities/school.entity';
 
 @Entity({ name: 'subscribe' })
 export class SubscribeEntity {

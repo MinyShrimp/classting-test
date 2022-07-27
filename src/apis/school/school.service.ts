@@ -4,8 +4,8 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 
-import { IPayload } from 'src/commons/auth/payload.interface';
-import { MESSAGES } from 'src/commons/message/message.enum';
+import { IPayload } from '../../commons/auth/payload.interface';
+import { MESSAGES } from '../../commons/message/message.enum';
 
 import { UserService } from '../user/user.service';
 
@@ -24,7 +24,7 @@ export class SchoolService {
     ) {}
 
     /**
-     * 중복 검사
+     * 존재 검사
      */
     async checkValid(
         schoolID: string, //
