@@ -14,6 +14,7 @@ import { SchoolNewsEntity } from '../../apis/schoolNews/entities/schoolNews.enti
 import { SchoolNewsService } from '../../apis/schoolNews/schoolNews.service';
 import { SchoolNewsRepository } from '../../apis/schoolNews/entities/schoolNews.repository';
 
+import { NewsfeedEntity } from '../../apis/newsfeed/entities/newsfeed.entity';
 import { SubscribeService } from '../../apis/subscribe/subscribe.service';
 
 import { CreateTestModule, sendRequest } from '../createTestModule';
@@ -547,7 +548,8 @@ describe('학교 소식 테스트', () => {
     ///////////////////////////////////////////////////////////////////
     // 뉴스피드 조회
     describe('GET /api/newsfeed', () => {
-        beforeEach(async () => {
+        beforeAll(async () => {
+            // 새로운 게시글 업로드 ( 4개 )
             await Promise.all(
                 newsInputs.map((input) => {
                     return newsService.create(
@@ -567,12 +569,12 @@ describe('학교 소식 테스트', () => {
             );
         });
 
-        afterEach(async () => {
+        afterAll(async () => {
             await newsRepository.deleteBySchoolID(schools[3].id);
         });
 
         describe('정상 테스트', () => {
-            it('요청 - 빈 값', async () => {
+            it('빈 값', async () => {
                 const res = await sendRequest(app)
                     .get('/api/newsfeed')
                     .set('Authorization', `Bearer ${tokens[0]}`)
@@ -581,20 +583,140 @@ describe('학교 소식 테스트', () => {
                 expect(res.body).toStrictEqual([]);
             });
 
-            it('요청 - 유저 1', async () => {
-                const res = await sendRequest(app)
-                    .get('/api/newsfeed')
-                    .set('Authorization', `Bearer ${tokens[1]}`)
-                    .expect(200);
-                expect(res.body).toBeDefined();
-            });
-
-            it('요청 - 유저 2', async () => {
+            it('일반 요청', async () => {
                 const res = await sendRequest(app)
                     .get('/api/newsfeed')
                     .set('Authorization', `Bearer ${tokens[2]}`)
                     .expect(200);
                 expect(res.body).toBeDefined();
+                expect(res.body).toBeInstanceOf(Array);
+                expect(res.body.length).toEqual(4);
+
+                // Res 값 검증
+                const tmp = res.body.map((v: NewsfeedEntity) => v.news.title);
+                expect(newsInputs.map((v) => v.title)).toStrictEqual(
+                    expect.arrayContaining(tmp),
+                );
+
+                // 시간 역순인지 확인
+                let prev = new Date(res.body[0].createAt);
+                for (let i = 1; i < res.body.length; i++) {
+                    const now = new Date(res.body[i].createAt);
+                    if (prev < now) {
+                        expect(true).toEqual(false);
+                    }
+                    prev = now;
+                }
+                expect(true).toEqual(true);
+            });
+
+            it('구독 해제 후 요청', async () => {
+                // 구독 해제
+                await sendRequest(app)
+                    .delete('/api/subscribe')
+                    .send({ schoolID: schools[3].id })
+                    .set('Authorization', `Bearer ${tokens[2]}`)
+                    .expect(200);
+
+                // 요청
+                const res = await sendRequest(app)
+                    .get('/api/newsfeed')
+                    .set('Authorization', `Bearer ${tokens[2]}`)
+                    .expect(200);
+                expect(res.body).toBeDefined();
+                expect(res.body).toBeInstanceOf(Array);
+                expect(res.body.length).toEqual(4);
+
+                // Res 값 검증
+                const tmp = res.body.map((v: NewsfeedEntity) => v.news.title);
+                expect(newsInputs.map((v) => v.title)).toStrictEqual(
+                    expect.arrayContaining(tmp),
+                );
+
+                // 시간 역순인지 확인
+                let prev = new Date(res.body[0].createAt);
+                for (let i = 1; i < res.body.length; i++) {
+                    const now = new Date(res.body[i].createAt);
+                    if (prev < now) {
+                        expect(true).toEqual(false);
+                    }
+                    prev = now;
+                }
+                expect(true).toEqual(true);
+            });
+
+            it('구독 해제 후 관리자가 게시글을 업로드한 뒤 요청', async () => {
+                // 관리자가 새로운 게시글을 업로드 함
+                await sendRequest(app)
+                    .post('/admin/school/news')
+                    .send({
+                        schoolID: schools[3].id,
+                        title: '새로운 게시글',
+                        contents: '새로운 게시글의 내용',
+                    })
+                    .set('Authorization', `Bearer ${tokens[0]}`)
+                    .expect(201);
+
+                // 요청
+                const res = await sendRequest(app)
+                    .get('/api/newsfeed')
+                    .set('Authorization', `Bearer ${tokens[2]}`)
+                    .expect(200);
+                expect(res.body).toBeDefined();
+                expect(res.body).toBeInstanceOf(Array);
+                expect(res.body.length).toEqual(4);
+
+                // Res 값 검증
+                const tmp = res.body.map((v: NewsfeedEntity) => v.news.title);
+                expect(newsInputs.map((v) => v.title)).toStrictEqual(
+                    expect.arrayContaining(tmp),
+                );
+
+                // 시간 역순인지 확인
+                let prev = new Date(res.body[0].createAt);
+                for (let i = 1; i < res.body.length; i++) {
+                    const now = new Date(res.body[i].createAt);
+                    if (prev < now) {
+                        expect(true).toEqual(false);
+                    }
+                    prev = now;
+                }
+                expect(true).toEqual(true);
+            });
+
+            it('구독 해제 후 관리자가 게시글을 업로드한 후 다시 구독한 후 요청', async () => {
+                // 다시 구독
+                await sendRequest(app)
+                    .post('/api/subscribe')
+                    .send({ schoolID: schools[3].id })
+                    .set('Authorization', `Bearer ${tokens[2]}`)
+                    .expect(201);
+
+                // 요청
+                const res = await sendRequest(app)
+                    .get('/api/newsfeed')
+                    .set('Authorization', `Bearer ${tokens[2]}`)
+                    .expect(200);
+                expect(res.body).toBeDefined();
+                expect(res.body).toBeInstanceOf(Array);
+                expect(res.body.length).toEqual(4);
+
+                // Res 값 검증
+                const tmp = res.body.map((v: NewsfeedEntity) => v.news.title);
+                expect(newsInputs.map((v) => v.title)).toStrictEqual(
+                    expect.arrayContaining(tmp),
+                );
+
+                // 시간 역순인지 확인
+                let prev = new Date(res.body[0].createAt);
+                for (let i = 1; i < res.body.length; i++) {
+                    const now = new Date(res.body[i].createAt);
+                    if (prev < now) {
+                        expect(true).toEqual(false);
+                    }
+                    prev = now;
+                }
+                expect(true).toEqual(true);
             });
         });
 
