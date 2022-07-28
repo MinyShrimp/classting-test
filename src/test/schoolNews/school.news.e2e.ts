@@ -14,11 +14,7 @@ import { SchoolNewsEntity } from '../../apis/schoolNews/entities/schoolNews.enti
 import { SchoolNewsService } from '../../apis/schoolNews/schoolNews.service';
 import { SchoolNewsRepository } from '../../apis/schoolNews/entities/schoolNews.repository';
 
-import { SubscribeEntity } from '../../apis/subscribe/entities/subscribe.entity';
 import { SubscribeService } from '../../apis/subscribe/subscribe.service';
-import { SubscribeCompositeKeyDto } from '../../apis/subscribe/dto/ck.dto';
-
-import { NewsfeedRepository } from '../../apis/newsfeed/entities/newsfeed.repository';
 
 import { CreateTestModule, sendRequest } from '../createTestModule';
 import { schoolNewsValues } from './values';
@@ -30,10 +26,8 @@ describe('학교 소식 테스트', () => {
     let tokens: Array<string>;
 
     let newsService: SchoolNewsService;
-
     let userRepository: UserRepository;
     let newsRepository: SchoolNewsRepository;
-    let newsfeedRepository: NewsfeedRepository;
 
     let users: Array<UserEntity>;
     let schools: Array<SchoolEntity>;
@@ -50,7 +44,6 @@ describe('학교 소식 테스트', () => {
 
         userRepository = load.module.get(UserRepository);
         newsRepository = load.module.get(SchoolNewsRepository);
-        newsfeedRepository = load.module.get(NewsfeedRepository);
 
         // 회원 가입
         const userService = load.module.get(UserService);
@@ -129,9 +122,9 @@ describe('학교 소식 테스트', () => {
         expect(schools).toBeDefined();
 
         expect(newsService).toBeDefined();
+        expect(newsRepository).toBeDefined();
 
         expect(userRepository).toBeDefined();
-        expect(newsfeedRepository).toBeDefined();
     });
 
     ///////////////////////////////////////////////////////////////////
@@ -485,7 +478,7 @@ describe('학교 소식 테스트', () => {
         });
 
         describe('정상 테스트', () => {
-            it('삭제', async () => {
+            it('삭제 취소', async () => {
                 expect(news).toBeDefined();
 
                 const res = await sendRequest(app)

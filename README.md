@@ -213,7 +213,7 @@ NestJS, Docker, TypeORM, MySQL
         -   동일한 사람이 동일한 학교에 두 번 요청함
     -   형식 불량
         -   토큰 누락
-        -   UUID 미입력
+        -   UUID 누락
         -   이상한 UUID 입력
 -   DELETE /api/subscribe
     -   정상 테스트
@@ -232,7 +232,49 @@ NestJS, Docker, TypeORM, MySQL
         -   관리자
     -   형식 불량
         -   토큰 누락
-        -   UUId 누락
+        -   UUID 누락
         -   제목 누락
         -   내용 누락
         -   이상한 UUID 입력
+-   PUT /admin/school/news
+    -   정상 테스트
+        -   제목 수정
+        -   내용 수정
+        -   제목, 내용 수정
+    -   미권한
+        -   유저
+        -   관리자
+    -   형식 불량
+        -   토큰 누락
+        -   UUID 누락
+        -   이상한 UUID 입력
+-   PATCH /admin/school/news
+    -   정상 테스트
+        -   삭제 취소
+    -   미권한
+        -   유저
+        -   관리자
+    -   형식 불량
+        -   토큰 누락
+        -   UUID 누락
+        -   이상한 UUID 입력
+-   DELETE /admin/school/news
+    -   정상 테스트
+        -   삭제
+    -   미권한
+        -   유저
+        -   관리자
+    -   형식 불량
+        -   토큰 누락
+        -   UUID 누락
+        -   이상한 UUID 입력
+
+#### 뉴스피드 테스트 구현
+
+-   GET /api/newsfeed
+    -   정상 테스트
+        -   유저 0 : 빈 값
+        -   유저 1
+        -   유저 2
+    -   형식 불량
+        -   토큰 누락
