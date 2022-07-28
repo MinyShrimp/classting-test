@@ -45,7 +45,6 @@ import { UserClassModule } from './apis/userClass/userClass.module';
             charset: 'utf8mb4',
             collaction: 'utf8mb4_general_ci',
             synchronize: true,
-            logging: true,
         }),
 
         ///////////////////////////////////////////////////////////////////////////
