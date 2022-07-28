@@ -17,7 +17,7 @@ export const MESSAGES = {
 
     ///////////////////////////////////////////////////////////////////
     // 학교 소식 //
-    NEWS_UNVALID: '소식 정보가 없습니다.',
+    NEWS_UNVALID: '소식 정보를 찾을 수 없습니다.',
 
     NEWS_CREATE_SUCCESS: '생성되었습니다.',
     NEWS_UPDATE_SUCCESS: '수정되었습니다.',

@@ -34,6 +34,16 @@ export class SchoolNewsRepository {
             .getOne();
     }
 
+    async getBySchoolID(
+        schoolID: string, //
+    ): Promise<SchoolNewsEntity[]> {
+        return await this.schoolNewsRepository
+            .createQueryBuilder('news')
+            .select(['news.id', 'news.title', 'news.contents', 'news.schoolID'])
+            .where('news.schoolID=:schoolID', { schoolID: schoolID })
+            .getMany();
+    }
+
     async create(
         dto: Partial<SchoolNewsEntity>, //
     ): Promise<SchoolNewsEntity> {
@@ -63,6 +73,14 @@ export class SchoolNewsRepository {
     ): Promise<DeleteResult> {
         return await this.schoolNewsRepository.softDelete({
             id: dto.schoolNewsID,
+        });
+    }
+
+    async deleteBySchoolID(
+        schoolID: string, //
+    ): Promise<DeleteResult> {
+        return await this.schoolNewsRepository.delete({
+            schoolID: schoolID,
         });
     }
 }
