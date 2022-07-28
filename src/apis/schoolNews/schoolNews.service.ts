@@ -80,15 +80,15 @@ export class SchoolNewsService {
         // 생성
         const result = await this.schoolNewsRepository.create({
             ...rest,
-            user: user,
-            school: school,
+            userID: user.id,
+            schoolID: school.id,
         });
 
         // 이 학교를 구독 중인 유저 목록 조회
         const subs = await this.subscribeRepository.getUserList(schoolID);
 
         // newsfeed에 생성 ( 비동기 )
-        this.newsfeedService.giveNewsToSubs({
+        await this.newsfeedService.giveNewsToSubs({
             userIDs: subs.map((v) => v.userID),
             newsID: result.id,
         });

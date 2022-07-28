@@ -81,8 +81,8 @@ export class SubscribeService {
         }
 
         return await this.subscribeRepository.create({
-            user,
-            school,
+            userID: user.id,
+            schoolID: school.id,
         });
     }
 

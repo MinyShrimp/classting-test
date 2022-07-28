@@ -64,7 +64,7 @@ export class SchoolService {
         // 생성
         return await this.schoolRepository.create({
             ...dto,
-            user,
+            userID: user.id,
         });
     }
 

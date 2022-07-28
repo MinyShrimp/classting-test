@@ -53,7 +53,7 @@ export class SchoolRepository {
     }
 
     async create(
-        dto: CreateSchoolDto & { user: UserEntity }, //
+        dto: CreateSchoolDto & { userID: string }, //
     ): Promise<SchoolEntity> {
         return await this.schoolRepository.save(dto);
     }

@@ -30,7 +30,7 @@ export class SchoolEntity {
 
     @ManyToOne(
         () => UserEntity,
-        { cascade: true, onDelete: 'SET NULL' }, //
+        { cascade: true, onDelete: 'CASCADE' }, //
     )
     user: UserEntity;
 

@@ -85,11 +85,10 @@ export class SubscribeRepository {
     /**
      * 생성
      */
-    async create(dto: {
-        school: SchoolEntity;
-        user: UserEntity; //
-    }): Promise<SubscribeEntity> {
-        return await this.subscribeRepository.save(dto);
+    async create(
+        ck: SubscribeCompositeKeyDto, //
+    ): Promise<SubscribeEntity> {
+        return await this.subscribeRepository.save(ck);
     }
 
     /**
@@ -98,7 +97,7 @@ export class SubscribeRepository {
     async delete(
         ck: SubscribeCompositeKeyDto, //
     ): Promise<DeleteResult> {
-        return await this.subscribeRepository.delete({ ...ck });
+        return await this.subscribeRepository.delete(ck);
     }
 
     /**
@@ -109,7 +108,7 @@ export class SubscribeRepository {
     ): Promise<DeleteResult[]> {
         return await Promise.all(
             cks.map((ck) => {
-                return this.subscribeRepository.delete({ ...ck });
+                return this.subscribeRepository.delete(ck);
             }),
         );
     }
