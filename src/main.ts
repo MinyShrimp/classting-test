@@ -3,16 +3,16 @@ const morgan_json = require('morgan-json');
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 
-import { setupSwagger } from './commons/swagger/setup';
-import { HttpExceptionFilter } from './commons/filter/http-exception.filter';
-
 import {
     createLogger,
     ConsoleLoggerStream,
     ResponseLoggerStream,
 } from './commons/logger/winston.config';
-import { AppModule } from './app.module';
+import { setupSwagger } from './commons/swagger/setup';
 import { AppLoggerService } from './commons/logger/logger.service';
+import { HttpExceptionFilter } from './commons/filter/http-exception.filter';
+
+import { AppModule } from './app.module';
 
 (async () => {
     createLogger();
