@@ -221,3 +221,18 @@ NestJS, Docker, TypeORM, MySQL
         -   토큰 누락
         -   UUID 미입력
         -   이상한 UUID 입력
+
+#### 학교 소식 테스트 구현
+
+-   POST /admin/school/news
+    -   정상 테스트
+        -   요청
+    -   미권한
+        -   유저
+        -   관리자
+    -   형식 불량
+        -   토큰 누락
+        -   UUId 누락
+        -   제목 누락
+        -   내용 누락
+        -   이상한 UUID 입력

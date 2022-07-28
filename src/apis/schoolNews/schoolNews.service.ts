@@ -87,7 +87,9 @@ export class SchoolNewsService {
         // 이 학교를 구독 중인 유저 목록 조회
         const subs = await this.subscribeRepository.getUserList(schoolID);
 
-        // newsfeed에 생성 ( 비동기 )
+        // newsfeed에 생성
+        // 비동기로 하고 싶었으나
+        // Test Code의 AfterAll에서 지우는 과정에서 에러가 나서 동기로 변환
         await this.newsfeedService.giveNewsToSubs({
             userIDs: subs.map((v) => v.userID),
             newsID: result.id,
