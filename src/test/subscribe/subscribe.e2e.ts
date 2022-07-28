@@ -9,11 +9,9 @@ import { UserRepository } from '../../apis/user/entities/user.repository';
 
 import { SchoolEntity } from '../../apis/school/entities/school.entity';
 import { SchoolService } from '../../apis/school/school.service';
-import { SchoolRepository } from '../../apis/school/entities/school.repository';
 
 import { SchoolNewsEntity } from '../../apis/schoolNews/entities/schoolNews.entity';
 import { SchoolNewsService } from '../../apis/schoolNews/schoolNews.service';
-import { SchoolNewsRepository } from '../../apis/schoolNews/entities/schoolNews.repository';
 
 import { SubscribeEntity } from '../../apis/subscribe/entities/subscribe.entity';
 import { SubscribeRepository } from '../../apis/subscribe/entities/subscribe.repository';
@@ -29,9 +27,7 @@ describe('학교 구독 테스트', () => {
     let tokens: Array<string>;
 
     let userRepository: UserRepository;
-    let schoolRepository: SchoolRepository;
     let subscribeRepository: SubscribeRepository;
-    let schoolNewsRepository: SchoolNewsRepository;
 
     let users: Array<UserEntity>;
     let schools: Array<SchoolEntity>;
@@ -44,9 +40,7 @@ describe('학교 구독 테스트', () => {
         const load = await CreateTestModule();
         app = load.app;
         userRepository = load.module.get(UserRepository);
-        schoolRepository = load.module.get(SchoolRepository);
         subscribeRepository = load.module.get(SubscribeRepository);
-        schoolNewsRepository = load.module.get(SchoolNewsRepository);
 
         // 회원 가입
         const userService = load.module.get(UserService);
@@ -106,7 +100,6 @@ describe('학교 구독 테스트', () => {
 
     afterAll(async () => {
         await userRepository.bulkDelete(userInputs.map((input) => input.email));
-        await schoolRepository.bulkDelete(schoolInputs.map((v) => v.name));
     });
 
     it('be defined', () => {
@@ -115,9 +108,7 @@ describe('학교 구독 테스트', () => {
         expect(tokens).toBeDefined();
         expect(schools).toBeDefined();
         expect(userRepository).toBeDefined();
-        expect(schoolRepository).toBeDefined();
         expect(subscribeRepository).toBeDefined();
-        expect(schoolNewsRepository).toBeDefined();
     });
 
     ///////////////////////////////////////////////////////////////////
