@@ -2,11 +2,11 @@ import { Body, Controller, Post } from '@nestjs/common';
 import {
     ApiTags,
     ApiOperation,
-    ApiOkResponse,
+    ApiCreatedResponse,
     ApiConflictResponse,
 } from '@nestjs/swagger';
 
-import { MESSAGES } from 'src/commons/message/message.enum';
+import { MESSAGES } from '../../commons/message/message.enum';
 
 import { CreateUserDto } from './dto/createUser.dto';
 
@@ -27,7 +27,7 @@ export class UserController {
         summary: '회원가입 API',
         description: '유저 회원가입',
     })
-    @ApiOkResponse({ description: MESSAGES.SIGNUP_SUCCESS })
+    @ApiCreatedResponse({ description: MESSAGES.SIGNUP_SUCCESS })
     @ApiConflictResponse({ description: MESSAGES.USER_OVERLAP })
     async create(
         @Body() body: CreateUserDto, //

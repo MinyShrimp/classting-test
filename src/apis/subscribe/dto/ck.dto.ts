@@ -1,4 +1,4 @@
-export class SubscribeCompositeKeyDto {
+export interface SubscribeCompositeKeyDto {
     userID: string;
     schoolID: string;
 }

@@ -14,12 +14,14 @@ import {
     ApiOperation,
     ApiBearerAuth,
     ApiOkResponse,
+    ApiCreatedResponse,
     ApiUnauthorizedResponse,
+    ApiConflictResponse,
 } from '@nestjs/swagger';
 
-import { Payload } from 'src/commons/auth/payload.param';
-import { IPayload } from 'src/commons/auth/payload.interface';
-import { MESSAGES } from 'src/commons/message/message.enum';
+import { Payload } from '../../commons/auth/payload.param';
+import { IPayload } from '../../commons/auth/payload.interface';
+import { MESSAGES } from '../../commons/message/message.enum';
 
 import { SchoolNewsEntity } from '../schoolNews/entities/schoolNews.entity';
 
@@ -67,6 +69,7 @@ export class SubscribeController {
         description: '학교 UUID',
         example: 'uuid',
     })
+    @ApiConflictResponse({ description: MESSAGES.SUBSCRIBE_UNVALID })
     async getNewsList(
         @Payload() payload: IPayload,
         @Param('school') schoolID: string, //
@@ -85,7 +88,8 @@ export class SubscribeController {
         summary: '구독 API',
         description: '구독',
     })
-    @ApiOkResponse({ description: MESSAGES.SUBSCRIBE_CREATE_SUCCESS })
+    @ApiCreatedResponse({ description: MESSAGES.SUBSCRIBE_CREATE_SUCCESS })
+    @ApiConflictResponse({ description: MESSAGES.SUBSCRIBE_AUTH })
     async create(
         @Payload() payload: IPayload,
         @Body() dto: SubscribeDto, //

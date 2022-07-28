@@ -2,6 +2,7 @@ export const MESSAGES = {
     ///////////////////////////////////////////////////////////////////
     // GENERALs //
     UNAUTHORIZED: 'Unauthorized',
+    BAD_REQUEST: 'Bad Request Exception',
     UNVALID_ACCESS: '잘못된 접근입니다.',
     UNKNOWN_FAILED: '알 수 없는 이유로 실패했습니다.',
 
@@ -16,7 +17,7 @@ export const MESSAGES = {
 
     ///////////////////////////////////////////////////////////////////
     // 학교 소식 //
-    NEWS_UNVALID: '소식 정보가 없습니다.',
+    NEWS_UNVALID: '소식 정보를 찾을 수 없습니다.',
 
     NEWS_CREATE_SUCCESS: '생성되었습니다.',
     NEWS_UPDATE_SUCCESS: '수정되었습니다.',

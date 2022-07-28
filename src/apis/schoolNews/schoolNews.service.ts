@@ -4,8 +4,8 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 
-import { IPayload } from 'src/commons/auth/payload.interface';
-import { MESSAGES } from 'src/commons/message/message.enum';
+import { IPayload } from '../../commons/auth/payload.interface';
+import { MESSAGES } from '../../commons/message/message.enum';
 
 import { UserService } from '../user/user.service';
 import { SchoolService } from '../school/school.service';
@@ -80,15 +80,17 @@ export class SchoolNewsService {
         // 생성
         const result = await this.schoolNewsRepository.create({
             ...rest,
-            user: user,
-            school: school,
+            userID: user.id,
+            schoolID: school.id,
         });
 
         // 이 학교를 구독 중인 유저 목록 조회
         const subs = await this.subscribeRepository.getUserList(schoolID);
 
-        // newsfeed에 생성 ( 비동기 )
-        this.newsfeedService.giveNewsToSubs({
+        // newsfeed에 생성
+        // 비동기로 하고 싶었으나
+        // Test Code의 AfterAll에서 지우는 과정에서 에러가 나서 동기로 변환
+        await this.newsfeedService.giveNewsToSubs({
             userIDs: subs.map((v) => v.userID),
             newsID: result.id,
         });

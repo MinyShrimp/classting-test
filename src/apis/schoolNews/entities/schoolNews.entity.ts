@@ -8,8 +8,8 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { UserEntity } from 'src/apis/user/entities/user.entity';
-import { SchoolEntity } from 'src/apis/school/entities/school.entity';
+import { UserEntity } from '../../user/entities/user.entity';
+import { SchoolEntity } from '../../school/entities/school.entity';
 
 @Entity({ name: 'school_news' })
 export class SchoolNewsEntity {
@@ -33,7 +33,7 @@ export class SchoolNewsEntity {
 
     @ManyToOne(
         () => SchoolEntity,
-        { cascade: true, onDelete: 'SET NULL' }, //
+        { cascade: true, onDelete: 'CASCADE' }, //
     )
     school: SchoolEntity;
 
@@ -42,7 +42,7 @@ export class SchoolNewsEntity {
 
     @ManyToOne(
         () => UserEntity,
-        { cascade: true, onDelete: 'SET NULL' }, //
+        { cascade: true, onDelete: 'CASCADE' }, //
     )
     user: UserEntity;
 

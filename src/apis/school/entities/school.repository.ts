@@ -2,7 +2,7 @@ import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { UserEntity } from 'src/apis/user/entities/user.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 
 import { SchoolEntity } from './school.entity';
 import { CreateSchoolDto } from '../dto/createSchool.dto';
@@ -53,7 +53,7 @@ export class SchoolRepository {
     }
 
     async create(
-        dto: CreateSchoolDto & { user: UserEntity }, //
+        dto: CreateSchoolDto & { userID: string }, //
     ): Promise<SchoolEntity> {
         return await this.schoolRepository.save(dto);
     }
@@ -69,5 +69,18 @@ export class SchoolRepository {
         dto: DeleteSchoolDto, //
     ): Promise<DeleteResult> {
         return await this.schoolRepository.delete({ id: dto.id });
+    }
+
+    /**
+     * 테스트용 함수
+     */
+    async bulkDelete(
+        names: Array<string>, //
+    ): Promise<DeleteResult[]> {
+        return await Promise.all(
+            names.map((name) => {
+                return this.schoolRepository.delete({ name });
+            }),
+        );
     }
 }

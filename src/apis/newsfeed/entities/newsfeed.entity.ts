@@ -6,8 +6,8 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { UserEntity } from 'src/apis/user/entities/user.entity';
-import { SchoolNewsEntity } from 'src/apis/schoolNews/entities/schoolNews.entity';
+import { UserEntity } from '../../user/entities/user.entity';
+import { SchoolNewsEntity } from '../../schoolNews/entities/schoolNews.entity';
 
 @Entity({ name: 'newsfeed' })
 export class NewsfeedEntity {

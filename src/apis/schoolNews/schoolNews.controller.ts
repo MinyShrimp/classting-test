@@ -13,12 +13,13 @@ import {
     ApiOperation,
     ApiBearerAuth,
     ApiOkResponse,
+    ApiCreatedResponse,
     ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
-import { Payload } from 'src/commons/auth/payload.param';
-import { IPayload } from 'src/commons/auth/payload.interface';
-import { MESSAGES } from 'src/commons/message/message.enum';
+import { Payload } from '../../commons/auth/payload.param';
+import { IPayload } from '../../commons/auth/payload.interface';
+import { MESSAGES } from '../../commons/message/message.enum';
 
 import { CreateSchoolNewsDto } from './dto/createSchoolNews.dto';
 import { UpdateSchoolNewsDto } from './dto/updateSchoolNews.dto';
@@ -41,7 +42,7 @@ export class SchoolNewsController {
         summary: '학교 뉴스 생성 API',
         description: '학교 뉴스 생성',
     })
-    @ApiOkResponse({ description: MESSAGES.NEWS_CREATE_SUCCESS })
+    @ApiCreatedResponse({ description: MESSAGES.NEWS_CREATE_SUCCESS })
     async create(
         @Payload() payload: IPayload,
         @Body() dto: CreateSchoolNewsDto, //

@@ -1,7 +1,7 @@
 import { Injectable, ConflictException } from '@nestjs/common';
 
-import { IPayload } from 'src/commons/auth/payload.interface';
-import { MESSAGES } from 'src/commons/message/message.enum';
+import { IPayload } from '../../commons/auth/payload.interface';
+import { MESSAGES } from '../../commons/message/message.enum';
 
 import { UserService } from '../user/user.service';
 import { SchoolService } from '../school/school.service';
@@ -81,8 +81,8 @@ export class SubscribeService {
         }
 
         return await this.subscribeRepository.create({
-            user,
-            school,
+            userID: user.id,
+            schoolID: school.id,
         });
     }
 
